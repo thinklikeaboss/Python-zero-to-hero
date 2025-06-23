@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Chapter 15 of Python Zero to Hero: delve into data analysis with pandas and NumPy—arrays, Series, DataFrame operations, and basic plotting."/>
+  <meta name="keywords"
+        content="Python, pandas, NumPy, DataFrame, Series, array, data analysis, aggregation, plotting"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Chapter 15 – Data Analysis with pandas & NumPy | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter14.html">Chapter 14</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter16.html">Chapter 16</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              GitHub Repo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Header -->
+    <header class="my-4">
+      <h1 class="display-6">Chapter 15: Data Analysis with pandas &amp; NumPy</h1>
+      <p class="text-muted">
+        Learn how to manipulate numerical arrays with NumPy and tabular data with pandas, including aggregation and basic plotting.
+      </p>
+      <a href="src/chapter15.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter15.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Create and manipulate <code>numpy.ndarray</code> objects.</li>
+        <li>Load and inspect data using <code>pandas.Series</code> and <code>DataFrame</code>.</li>
+        <li>Perform indexing, slicing, and boolean selection in pandas.</li>
+        <li>Compute summary statistics and group-by aggregations.</li>
+        <li>Handle missing data and apply functions with <code>apply</code>.</li>
+        <li>Visualize data with built-in pandas plotting (matplotlib).</li>
+      </ul>
+    </section>
+
+    <!-- 1. NumPy Arrays -->
+    <section id="numpy" class="mb-5">
+      <h2>1. NumPy Arrays</h2>
+      <pre><code class="python">import numpy as np
+
+# 1D array
+arr = np.array([1, 2, 3, 4])
+# 2D array
+mat = np.arange(9).reshape(3, 3)
+print(arr)
+print(mat)</code></pre>
+      <pre><code class="python"># elementwise operations
+print(arr + 10)
+# statistics
+print("mean:", arr.mean(), "sum:", arr.sum())</code></pre>
+    </section>
+
+    <!-- 2. pandas Series & DataFrame -->
+    <section id="pandas" class="mb-5">
+      <h2>2. pandas Series &amp; DataFrame</h2>
+      <pre><code class="python">import pandas as pd
+
+# create Series
+s = pd.Series([10, 20, 30], index=['a','b','c'])
+# create DataFrame
+df = pd.DataFrame({
+    'col1': [1,2,3],
+    'col2': ['x','y','z']
+})
+print(s)
+print(df.head())</code></pre>
+      <pre><code class="python"># read CSV
+df = pd.read_csv('data.csv')
+print(df.info())
+print(df.describe())</code></pre>
+    </section>
+
+    <!-- 3. Indexing & Selection -->
+    <section id="selection" class="mb-5">
+      <h2>3. Indexing &amp; Selection</h2>
+      <pre><code class="python"># label-based
+print(df.loc[0, 'col1'])
+# position-based
+print(df.iloc[0:2, 0:2])
+# boolean mask
+print(df[df['col1'] > 1])</code></pre>
+    </section>
+
+    <!-- 4. Aggregation & GroupBy -->
+    <section id="groupby" class="mb-5">
+      <h2>4. Aggregation &amp; GroupBy</h2>
+      <pre><code class="python"># summary statistics
+print(df['col1'].mean(), df['col1'].sum())
+
+# group by
+grouped = df.groupby('col2')['col1'].agg(['mean','count'])
+print(grouped)</code></pre>
+    </section>
+
+    <!-- 5. Missing Data & Apply -->
+    <section id="missing-apply" class="mb-5">
+      <h2>5. Missing Data &amp; apply()</h2>
+      <pre><code class="python"># fill missing values
+df['col1'] = df['col1'].fillna(0)
+# apply function
+df['col3'] = df['col1'].apply(lambda x: x**2)</code></pre>
+    </section>
+
+    <!-- 6. Plotting -->
+    <section id="plotting" class="mb-5">
+      <h2>6. Basic Plotting</h2>
+      <pre><code class="python">import matplotlib.pyplot as plt
+
+# line plot
+df['col1'].plot(title='Col1 over index')
+plt.show()
+
+# bar plot
+df.groupby('col2')['col1'].sum().plot(kind='bar')
+plt.show()</code></pre>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Load the Iris dataset into a DataFrame and compute the average petal length by species.</li>
+        <li>Identify and drop rows with missing values in a sample CSV.</li>
+        <li>Plot a histogram of a numeric column and save it to a file.</li>
+        <li>Use <code>apply</code> to normalize a column (min–max scaling).</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter14.html" class="btn btn-outline-secondary">&larr; Chapter 14</a>
+      <a href="chapter16.html" class="btn btn-primary">Chapter 16 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
