@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Chapter 8 of Python Zero to Hero: file input/output in console—read/write text, CSV and binary files using context managers."/>
+  <meta name="keywords"
+        content="Python, file I/O, open, read, write, CSV, binary, with, context manager"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Chapter 8 – File I/O | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .io-table th, .io-table td { padding: .5rem; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter7.html">Chapter 7</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter9.html">Chapter 9</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              GitHub Repo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Header -->
+    <header class="my-4">
+      <h1 class="display-6">Chapter 8: File I/O</h1>
+      <p class="text-muted">
+        Learn to read and write text, CSV, and binary files from the console using Python.
+      </p>
+      <a href="src/chapter8.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter8.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Open files in text and binary modes for reading and writing.</li>
+        <li>Read entire file, line by line, or in chunks.</li>
+        <li>Write text and binary data, use <code>writelines()</code>.</li>
+        <li>Use the <code>csv</code> module to parse and generate CSV files.</li>
+        <li>Manage files safely with context managers (<code>with</code> statement).</li>
+      </ul>
+    </section>
+
+    <!-- 1. Text File Reading -->
+    <section id="read-text" class="mb-5">
+      <h2>1. Reading Text Files</h2>
+      <p>Open in read mode (<code>'r'</code>), then:</p>
+      <pre><code class="python">with open("data.txt", "r", encoding="utf-8") as f:
+    content = f.read()         # entire file as one string
+    lines   = f.readlines()    # list of lines
+    f.seek(0)                  # go back to start
+    for line in f:             # iterate line by line
+        print(line.strip())</code></pre>
+    </section>
+
+    <!-- 2. Text File Writing -->
+    <section id="write-text" class="mb-5">
+      <h2>2. Writing Text Files</h2>
+      <p>Open in write (<code>'w'</code>) or append (<code>'a'</code>) mode:</p>
+      <pre><code class="python">lines = ["First line\n", "Second line\n"]
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("Header\n")
+    f.writelines(lines)      # write multiple lines at once</code></pre>
+    <p>Modes:</p>
+      <table class="table table-sm table-bordered io-table">
+        <thead>
+          <tr><th>Mode</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>'r'</code></td><td>Read (default), file must exist</td></tr>
+          <tr><td><code>'w'</code></td><td>Write, truncate or create</td></tr>
+          <tr><td><code>'a'</code></td><td>Append, create if not exists</td></tr>
+          <tr><td><code>'r+'</code></td><td>Read/write</td></tr>
+          <tr><td><code>'b'</code> suffix</td><td>Binary mode</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. CSV File Handling -->
+    <section id="csv" class="mb-5">
+      <h2>3. CSV File Handling</h2>
+      <p>Use the built-in <code>csv</code> module:</p>
+      <h3>a) Reading CSV</h3>
+      <pre><code class="python">import csv
+
+with open("records.csv", newline="", encoding="utf-8") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)           # each row is a list of strings</code></pre>
+      <h3>b) Writing CSV</h3>
+      <pre><code class="python">import csv
+
+rows = [["Name","Age"], ["Alice","30"], ["Bob","25"]]
+with open("out.csv", "w", newline="", encoding="utf-8") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows(rows)</code></pre>
+    </section>
+
+    <!-- 4. Binary File I/O -->
+    <section id="binary" class="mb-5">
+      <h2>4. Binary File I/O</h2>
+      <p>Open in binary mode (<code>'rb'</code>, <code>'wb'</code>):</p>
+      <pre><code class="python"># Read image bytes
+with open("image.png", "rb") as fin:
+    data = fin.read()
+
+# Write bytes to new file
+with open("copy.png", "wb") as fout:
+    fout.write(data)</code></pre>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Create a text file with ten lines, then write a script to count and print the number of lines.</li>
+        <li>Build a CSV file of products (name, price), then read it and calculate the total cost.</li>
+        <li>Write a function to append a log entry with timestamp to a log file.</li>
+        <li>Copy a binary file (e.g., an image) from source to destination using chunks.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter7.html" class="btn btn-outline-secondary">&larr; Chapter 7</a>
+      <a href="chapter9.html" class="btn btn-primary">Chapter 9 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
