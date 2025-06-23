@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Chapter 22 of Python Zero to Hero: build robust command-line interfaces with argparse, Click and Typer."/>
+  <meta name="keywords"
+        content="Python, CLI, command line, argparse, click, typer, console scripts, CLI tools"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Chapter 22 – Building CLI Tools with argparse, Click & Typer | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter21.html">Chapter 21</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter23.html">Chapter 23</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">GitHub Repo</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Chapter 22: Building CLI Tools with argparse, Click &amp; Typer</h1>
+      <p class="text-muted">
+        Learn to create powerful command-line interfaces using Python’s standard library and popular frameworks.
+      </p>
+      <a href="src/chapter22.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter22.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Use <code>argparse</code> to parse arguments and options.</li>
+        <li>Create commands and subcommands with <code>Click</code>.</li>
+        <li>Leverage <code>Typer</code> and type hints to build CLIs.</li>
+        <li>Package your tool as a console script.</li>
+        <li>Handle input validation, help text and error messages.</li>
+      </ul>
+    </section>
+
+    <!-- 1. argparse Basics -->
+    <section id="argparse" class="mb-5">
+      <h2>1. argparse Basics</h2>
+      <pre><code class="python">import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Greet a user.")
+    parser.add_argument("name", help="Name of the user")
+    parser.add_argument("-t", "--times", type=int, default=1,
+                        help="Number of greetings")
+    args = parser.parse_args()
+
+    for _ in range(args.times):
+        print(f"Hello, {args.name}!")
+
+if __name__ == "__main__":
+    main()</code></pre>
+      <p>Run: <code>python chapter22.py Alice -t 3</code></p>
+    </section>
+
+    <!-- 2. Click Library -->
+    <section id="click" class="mb-5">
+      <h2>2. Click</h2>
+      <pre><code class="python">import click
+
+@click.command()
+@click.argument("name")
+@click.option("--times", default=1, help="Number of greetings")
+def cli(name, times):
+    """Greet a user multiple times."""
+    for _ in range(times):
+        click.echo(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    cli()</code></pre>
+      <p>Install: <code>pip install click</code>. Run: <code>python chapter22.py Bob --times 2</code></p>
+    </section>
+
+    <!-- 3. Typer Framework -->
+    <section id="typer" class="mb-5">
+      <h2>3. Typer &amp; Type Hints</h2>
+      <pre><code class="python">import typer
+
+app = typer.Typer()
+
+@app.command()
+def greet(name: str, times: int = 1):
+    \"\"\"Greet a user multiple times.\"\"\"
+    for _ in range(times):
+        typer.echo(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    app()</code></pre>
+      <p>Install: <code>pip install typer[all]</code>. Run: <code>python chapter22.py greet Carol --times 3</code></p>
+    </section>
+
+    <!-- 4. Packaging as Console Script -->
+    <section id="packaging" class="mb-5">
+      <h2>4. Packaging CLI Tools</h2>
+      <p>Add to <code>setup.py</code> or <code>pyproject.toml</code>:</p>
+      <pre><code class="toml">[project.scripts]
+mycli = "mypackage.cli:app"</code></pre>
+      <p>After installation: <code>mycli --help</code></p>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Extend the <code>argparse</code> example with a <code>--uppercase</code> flag.</li>
+        <li>Create a Click group with two subcommands: <code>greet</code> and <code>farewell</code>.</li>
+        <li>Build a Typer app with commands to add/list/remove items from an in-memory todo list.</li>
+        <li>Package the Typer app and install it locally as <code>todo-cli</code>.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter21.html" class="btn btn-outline-secondary">&larr; Chapter 21</a>
+      <a href="chapter23.html" class="btn btn-primary">Chapter 23 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
