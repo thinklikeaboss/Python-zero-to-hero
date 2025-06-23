@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Chapter 12 of Python Zero to Hero: learn debugging with pdb, logging best practices, and basic unit testing with unittest."/>
+  <meta name="keywords"
+        content="Python, debugging, pdb, logging, unittest, test, logging levels, handlers, assertions"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Chapter 12 – Debugging, Logging & Testing | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter11.html">Chapter 11</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter13.html">Chapter 13</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              GitHub Repo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Header -->
+    <header class="my-4">
+      <h1 class="display-6">Chapter 12: Debugging, Logging &amp; Testing</h1>
+      <p class="text-muted">
+        Techniques to find and fix bugs, record events with logging, and write automated tests.
+      </p>
+      <a href="src/chapter12.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter12.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Use print() and <code>pdb</code> for interactive debugging.</li>
+        <li>Configure the <code>logging</code> module: levels, formatters, handlers.</li>
+        <li>Differentiate <code>assert</code> statements from exceptions and logs.</li>
+        <li>Write basic unit tests with <code>unittest</code> and run them.</li>
+        <li>Learn about third-party testing tools like <code>pytest</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Debugging -->
+    <section id="debugging" class="mb-5">
+      <h2>1. Debugging Techniques</h2>
+      <p>Start with strategic <code>print()</code> calls:</p>
+      <pre><code class="python">def compute(x, y):
+    print("DEBUG:", x, y)
+    return x / y
+compute(5, 0)  # inspect inputs</code></pre>
+      <p>Use the built-in <code>pdb</code> for breakpoints:</p>
+      <pre><code class="python">import pdb
+
+def buggy():
+    a = 1
+    pdb.set_trace()    # pause here
+    b = 0
+    return a / b
+
+buggy()</code></pre>
+    </section>
+
+    <!-- 2. Logging -->
+    <section id="logging" class="mb-5">
+      <h2>2. Logging Module</h2>
+      <p>A better alternative to prints; supports levels and destinations:</p>
+      <pre><code class="python">import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S"
+)
+logger = logging.getLogger(__name__)
+
+logger.debug("Debugging info")
+logger.info("Startup complete")
+logger.warning("Low disk space")
+logger.error("An error occurred")</code></pre>
+      <p>Create file or stream handlers for flexible output:</p>
+      <pre><code class="python">fh = logging.FileHandler("app.log")
+fh.setLevel(logging.WARNING)
+logger.addHandler(fh)</code></pre>
+    </section>
+
+    <!-- 3. Assertions -->
+    <section id="assertions" class="mb-5">
+      <h2>3. Assertions</h2>
+      <p>Use <code>assert</code> to check invariants during development:</p>
+      <pre><code class="python">def divide(a, b):
+    assert b != 0, "b must not be zero"
+    return a / b</code></pre>
+      <p>Note: <code>assert</code> statements are removed when Python runs with <code>-O</code>.</p>
+    </section>
+
+    <!-- 4. Unit Testing -->
+    <section id="unittest" class="mb-5">
+      <h2>4. Unit Testing with unittest</h2>
+      <p>Create test cases by subclassing <code>unittest.TestCase</code>:</p>
+      <pre><code class="python">import unittest
+from chapter12 import divide
+
+class TestMath(unittest.TestCase):
+    def test_divide_normal(self):
+        self.assertEqual(divide(10, 2), 5)
+
+    def test_divide_zero(self):
+        with self.assertRaises(AssertionError):
+            divide(5, 0)
+
+if __name__ == "__main__":
+    unittest.main()</code></pre>
+      <p>Run tests with <code>python -m unittest</code> or integrate into your CI.</p>
+    </section>
+
+    <!-- 5. pytest & Beyond -->
+    <section id="pytest" class="mb-5">
+      <h2>5. pytest Overview</h2>
+      <p><code>pytest</code> offers concise syntax and fixtures:</p>
+      <pre><code class="python"># test_chapter12.py
+import pytest
+from chapter12 import divide
+
+def test_divide():
+    assert divide(9, 3) == 3
+
+def test_divide_zero():
+    with pytest.raises(AssertionError):
+        divide(1, 0)</code></pre>
+      <p>Install with <code>pip install pytest</code> and run <code>pytest</code>.</p>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Insert <code>pdb.set_trace()</code> into a small function and step through it.</li>
+        <li>Switch <code>print()</code> calls to <code>logging</code> at various levels and inspect the log file.</li>
+        <li>Add <code>assert</code> checks to a data-validation function.</li>
+        <li>Write <code>unittest</code> tests for a simple calculator module (add, sub, mul, div).</li>
+        <li>Try rewriting those tests in <code>pytest</code> style and compare.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter11.html" class="btn btn-outline-secondary">&larr; Chapter 11</a>
+      <a href="chapter13.html" class="btn btn-primary">Chapter 13 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
