@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="Chapter 5 of Python Zero to Hero: control flow with conditionals (if/elif/else), loops (for, while), break & continue." />
+  <meta name="keywords"
+        content="Python, control flow, if, elif, else, for, while, loops, break, continue" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Chapter 5 – Control Flow | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter4.html">Chapter 4</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter6.html">Chapter 6</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">GitHub Repo</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Header -->
+    <header class="my-4">
+      <h1 class="display-6">Chapter 5: Control Flow</h1>
+      <p class="text-muted">
+        Direct the execution path of your programs using conditionals and loops.
+      </p>
+      <a href="src/chapter5.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter5.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Write <code>if</code>, <code>elif</code>, <code>else</code> branches.</li>
+        <li>Create <code>for</code> loops over sequences and <code>range()</code>.</li>
+        <li>Use <code>while</code> loops for repeated conditions.</li>
+        <li>Control loops with <code>break</code> and <code>continue</code>.</li>
+        <li>Understand nesting of conditionals and loops.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Conditional Statements -->
+    <section id="conditionals" class="mb-5">
+      <h2>1. Conditional Statements</h2>
+      <p>Branch logic based on boolean expressions:</p>
+      <pre><code class="python">x = 10
+if x < 5:
+    print("x is less than 5")
+elif x < 15:
+    print("x is between 5 and 14")
+else:
+    print("x is 15 or more")</code></pre>
+      <p>You can nest conditions:</p>
+      <pre><code class="python">score = 85
+if score >= 90:
+    grade = "A"
+else:
+    if score >= 80:
+        grade = "B"
+    else:
+        grade = "C"
+print(f"Grade: {grade}")</code></pre>
+    </section>
+
+    <!-- 2. for Loops -->
+    <section id="for-loops" class="mb-5">
+      <h2>2. for Loops</h2>
+      <p>Iterate over sequences (lists, strings, ranges):</p>
+      <pre><code class="python">fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+# using range()
+for i in range(5):       # 0,1,2,3,4
+    print(i)</code></pre>
+      <p>You can also loop with index:</p>
+      <pre><code class="python">for idx, val in enumerate(fruits, start=1):
+    print(idx, val)</code></pre>
+    </section>
+
+    <!-- 3. while Loops -->
+    <section id="while-loops" class="mb-5">
+      <h2>3. while Loops</h2>
+      <p>Repeat while a condition holds true:</p>
+      <pre><code class="python">count = 0
+while count < 3:
+    print("Count is", count)
+    count += 1</code></pre>
+      <p>Use a sentinel or flag to control the loop:</p>
+      <pre><code class="python">running = True
+while running:
+    cmd = input("Enter command (quit to exit): ")
+    if cmd == "quit":
+        running = False
+    else:
+        print("You typed:", cmd)</code></pre>
+    </section>
+
+    <!-- 4. break & continue -->
+    <section id="break-continue" class="mb-5">
+      <h2>4. break & continue</h2>
+      <p>Alter loop execution flow:</p>
+      <ul>
+        <li><code>break</code>: exit loop immediately.</li>
+        <li><code>continue</code>: skip to next iteration.</li>
+      </ul>
+      <pre><code class="python">for n in range(10):
+    if n == 5:
+        break        # stops loop at 5
+    print(n)
+
+for n in range(5):
+    if n % 2 == 0:
+        continue     # skip even numbers
+    print(n)         # prints 1,3</code></pre>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Write a script that prints numbers 1–20, but stops at the first number divisible by 7.</li>
+        <li>Ask the user for a password; keep prompting until they enter the correct one (<code>"secret"</code>).</li>
+        <li>Loop through a list of names and print only those that start with a vowel using <code>continue</code>.</li>
+        <li>Implement a nested loop to print a 5×5 multiplication table.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter4.html" class="btn btn-outline-secondary">&larr; Chapter 4</a>
+      <a href="chapter6.html" class="btn btn-primary">Chapter 6 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Highlight.js -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
