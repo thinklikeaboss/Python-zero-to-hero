@@ -5,6 +5,8 @@
 **Author:** Luca Bocaletto  
 **Repo:** https://github.com/bocaletto-luca/python-zero-to-hero  
 
+[![Test Online](https://img.shields.io/badge/Test%20Online-Visit%20Site-brightgreen?style=for-the-badge)](https://bocaletto-luca.github.io/Python-zero-to-hero/index.html)
+
 ---
 
 ## 📖 Table of Contents
