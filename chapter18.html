@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Chapter 18 of Python Zero to Hero: packaging and distributing Python projects with setuptools, pyproject.toml, wheels and PyPI."/>
+  <meta name="keywords"
+        content="Python, packaging, distribution, setuptools, wheel, pip, PyPI, setup.py, pyproject.toml"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Chapter 18 – Packaging &amp; Distribution | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter17.html">Chapter 17</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter19.html">Chapter 19</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              GitHub Repo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Chapter 18: Packaging &amp; Distribution</h1>
+      <p class="text-muted">
+        Structure, build and publish your Python projects using setuptools, pyproject.toml, wheels and Twine.
+      </p>
+      <a href="src/chapter18.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter18.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Organize code into a package folder with __init__.py.</li>
+        <li>Write a setup.py using setuptools.setup().</li>
+        <li>Configure pyproject.toml and declarative metadata.</li>
+        <li>Build source and wheel distributions.</li>
+        <li>Publish packages to Test PyPI and PyPI via Twine.</li>
+      </ul>
+    </section>
+
+    <section id="structure" class="mb-5">
+      <h2>1. Project Structure</h2>
+      <p>Typical layout:</p>
+      <pre><code class="bash">myproject/
+├── src/
+│   └── mypackage/
+│       ├── __init__.py
+│       └── module.py
+├── README.md
+├── LICENSE
+├── setup.py
+└── pyproject.toml</code></pre>
+    </section>
+
+    <section id="setup-py" class="mb-5">
+      <h2>2. setup.py with setuptools</h2>
+      <pre><code class="python">from setuptools import setup, find_packages
+
+setup(
+    name="mypackage",
+    version="0.1.0",
+    author="Your Name",
+    description="A brief description",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    install_requires=[
+        "requests>=2.0"
+    ],
+    entry_points={
+        "console_scripts": [
+            "mycmd = mypackage.module:main"
+        ]
+    },
+)</code></pre>
+    </section>
+
+    <section id="pyproject" class="mb-5">
+      <h2>3. pyproject.toml (PEP 517/518)</h2>
+      <pre><code class="toml">[build-system]
+requires = ["setuptools>=42","wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mypackage"
+version = "0.1.0"
+description = "A brief description"
+authors = [{name="Your Name", email="you@example.com"}]
+dependencies = ["requests>=2.0"]</code></pre>
+    </section>
+
+    <section id="build" class="mb-5">
+      <h2>4. Building Distributions</h2>
+      <pre><code class="bash"># install build tool (optional)
+python -m pip install --upgrade build
+
+# generate sdist and wheel
+python -m build
+# outputs in dist/: mypackage-0.1.0.tar.gz and .whl</code></pre>
+    </section>
+
+    <section id="publish" class="mb-5">
+      <h2>5. Publishing to PyPI</h2>
+      <pre><code class="bash"># install twine
+python -m pip install --upgrade twine
+
+# upload to Test PyPI
+python -m twine upload --repository testpypi dist/*
+
+# install from Test PyPI to test
+pip install --index-url https://test.pypi.org/simple/ mypackage
+
+# upload to official PyPI
+python -m twine upload dist/*</code></pre>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Create a minimal package in src/, write setup.py and build an sdist.</li>
+        <li>Add an entry_point console_script and test it after installing locally.</li>
+        <li>Convert setup.py metadata into pyproject.toml and rebuild.</li>
+        <li>Publish your package to Test PyPI and install it from there.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter17.html" class="btn btn-outline-secondary">&larr; Chapter 17</a>
+      <a href="chapter19.html" class="btn btn-primary">Chapter 19 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
