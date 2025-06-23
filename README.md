@@ -1,5 +1,4 @@
 # Python Zero to Hero
-#### Author: Bocaletto Luca
 
 > A hands-on, full-stack roadmap to mastering Python—starting from the basics all the way to web apps, CLI tools, packaging, and beyond.
 
