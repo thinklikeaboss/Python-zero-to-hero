@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="Chapter 4 of Python Zero to Hero: learn console input/output with print(), input(), and string formatting." />
+  <meta name="keywords"
+        content="Python, console I/O, print, input, f-strings, format, string interpolation" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Chapter 4 – Console I/O | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter3.html">Chapter 3</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter5.html">Chapter 5</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">GitHub Repo</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Header -->
+    <header class="my-4">
+      <h1 class="display-6">Chapter 4: Console I/O</h1>
+      <p class="text-muted">
+        Master console input and output: <code>print()</code>, <code>input()</code>,
+        and various string formatting techniques.
+      </p>
+      <a href="src/chapter4.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter4.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-5">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Use <code>print()</code> with <code>sep</code>, <code>end</code> and <code>flush</code>.</li>
+        <li>Read user input via <code>input()</code> and convert types.</li>
+        <li>Format strings with f-strings, <code>str.format()</code>, and <code>%</code> operator.</li>
+      </ul>
+    </section>
+
+    <!-- 1. print() -->
+    <section id="print" class="mb-5">
+      <h2>1. The print() Function</h2>
+      <p>Print values to console. Default <code>sep=' '</code>, <code>end='\n'</code>:</p>
+      <pre><code class="python">print("Hello", "World")           # Hello World
+print("No newline", end="")           # stays on same line
+print(" → next")</code></pre>
+      <p>Customize separator and flush:</p>
+      <pre><code class="python">print(1, 2, 3, sep=" - ")          # 1 - 2 - 3
+import sys
+print("Immediate", flush=True)         # flushes buffer</code></pre>
+    </section>
+
+    <!-- 2. input() -->
+    <section id="input" class="mb-5">
+      <h2>2. The input() Function</h2>
+      <p>Prompt the user and read a line (returns <code>str</code>):</p>
+      <pre><code class="python">name = input("Enter your name: ")
+age_str = input("Enter your age: ")
+age = int(age_str)                    # convert to int
+print(f"Name: {name}, Age: {age}")</code></pre>
+      <p>Always handle conversion errors:</p>
+      <pre><code class="python">try:
+    num = int(input("Number: "))
+except ValueError:
+    print("Invalid number!")</code></pre>
+    </section>
+
+    <!-- 3. String Formatting -->
+    <section id="formatting" class="mb-5">
+      <h2>3. String Formatting</h2>
+      <h3>a) f-strings (Python 3.6+)</h3>
+      <pre><code class="python">user = "Alice"
+score = 95.5
+print(f"{user} scored {score:.1f} points")</code></pre>
+      <h3>b) str.format()</h3>
+      <pre><code class="python">template = "{} has {} apples"
+print(template.format("Bob", 3))</code></pre>
+      <h3>c) % Operator</h3>
+      <pre><code class="python">fmt = "Total: %d items, %0.2f$"
+print(fmt % (7, 15.239))</code></pre>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Write a script that asks for three numbers, prints their sum.</li>
+        <li>Prompt for first/last name separately and greet with an f-string.</li>
+        <li>Build a small menu: ask “1) Add  2) Subtract”, read choice, perform on two inputs.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter3.html" class="btn btn-outline-secondary">&larr; Chapter 3</a>
+      <a href="chapter5.html" class="btn btn-primary">Chapter 5 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Scripts -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
