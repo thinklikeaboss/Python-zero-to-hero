@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Chapter 2 of Python Zero to Hero: explore Python’s core data types and variable assignment." />
+  <meta name="keywords" content="Python, data types, variables, int, float, str, bool, None" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Chapter 2 – Data Types & Variables | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarContent" aria-controls="navbarContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter1.html">Chapter 1</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Index</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              GitHub Repo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <header class="mb-4">
+      <h1 class="display-6">Chapter 2: Data Types & Variables</h1>
+      <p class="text-muted">Understand Python’s built-in types and how to assign and name variables.</p>
+      <a href="src/chapter2.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Download <code>chapter2.py</code>
+      </a>
+    </header>
+
+    <!-- Objectives -->
+    <section id="objectives" class="mb-4">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Identify Python’s core data types: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>None</code>.</li>
+        <li>Declare and name variables following Python conventions.</li>
+        <li>Distinguish mutable vs immutable types.</li>
+      </ul>
+    </section>
+
+    <!-- Theory: Types -->
+    <section id="types" class="mb-4">
+      <h2>1. Core Data Types</h2>
+      <p>Python has several primitive types:</p>
+      <ul>
+        <li><code>int</code>: integers, e.g. <code>42</code></li>
+        <li><code>float</code>: floating-point numbers, e.g. <code>3.14</code></li>
+        <li><code>str</code>: text, e.g. <code>"Hello"</code></li>
+        <li><code>bool</code>: boolean, <code>True</code> or <code>False</code></li>
+        <li><code>NoneType</code>: absence of value, <code>None</code></li>
+      </ul>
+      <p>Use <code>type()</code> to inspect:</p>
+      <pre><code class="python">>>> type(100)
+&lt;class 'int'&gt;
+>>> type("Python")
+&lt;class 'str'&gt;</code></pre>
+    </section>
+
+    <!-- Theory: Variables -->
+    <section id="variables" class="mb-4">
+      <h2>2. Variables & Naming</h2>
+      <p>Assign values with <code>=</code>:</p>
+      <pre><code class="python">x = 10
+name = "Alice"
+is_valid = True</code></pre>
+      <p>Naming rules:</p>
+      <ul>
+        <li>Lowercase words, underscores to separate: <code>my_variable</code>.</li>
+        <li>Must start with letter or underscore, not with a digit.</li>
+        <li>Cannot use reserved keywords: <code>for</code>, <code>class</code>, etc.</li>
+      </ul>
+      <p>Reassign any variable to new types freely:</p>
+      <pre><code class="python">x = 10
+x = "ten"     # now a str</code></pre>
+    </section>
+
+    <!-- Theory: Mutability -->
+    <section id="mutability" class="mb-4">
+      <h2>3. Mutability vs Immutability</h2>
+      <p>Immutable types (<code>int</code>, <code>float</code>, <code>str</code>, <code>tuple</code>) cannot be changed in place.</p>
+      <p>Mutable types (<code>list</code>, <code>dict</code>, <code>set</code>) can be modified:</p>
+      <pre><code class="python"># Immutable
+a = "hello"
+a += " world"   # creates new string
+
+# Mutable
+lst = [1, 2, 3]
+lst.append(4)   # modifies same list object</code></pre>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-5">
+      <h2>Exercises</h2>
+      <ol>
+        <li>Print the type of each literal: <code>123</code>, <code>3.14</code>, <code>"text"</code>, <code>False</code>, <code>None</code>.</li>
+        <li>Create three variables of different types and print their names and values in one <code>print()</code> call.</li>
+        <li>Demonstrate mutating a list and attempting (and failing) to mutate a string.</li>
+      </ol>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter1.html" class="btn btn-outline-secondary">&larr; Chapter 1</a>
+      <a href="chapter3.html" class="btn btn-primary">Chapter 3 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
