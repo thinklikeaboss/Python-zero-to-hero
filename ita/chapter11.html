@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 11 di Python Zero to Hero: immergiti nella Programmazione Orientata agli Oggetti—classi, oggetti, metodi, ereditarietà e metodi speciali."/>
+  <meta name="keywords"
+        content="Python, OOP, classe, oggetto, metodo, ereditarietà, polimorfismo, __init__, dunder methods, incapsulamento, property"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 11 – Programmazione Orientata agli Oggetti | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter10.html">Capitolo 10</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter12.html">Capitolo 12</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 11: Programmazione Orientata agli Oggetti</h1>
+      <p class="text-muted">
+        Impara a definire classi, creare oggetti, gestire ereditarietà e usare i metodi speciali di Python.
+      </p>
+      <a href="src/chapter11.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter11.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Definire classi e istanziare oggetti.</li>
+        <li>Usare metodi e attributi di istanza, e il costruttore <code>__init__</code>.</li>
+        <li>Lavorare con variabili di classe, <code>classmethod</code> e <code>staticmethod</code>.</li>
+        <li>Implementare ereditarietà, overriding dei metodi e polimorfismo.</li>
+        <li>Utilizzare metodi speciali (“dunder”) per personalizzare il comportamento.</li>
+        <li>Incapsulare dati con attributi privati e <code>@property</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Classi e istanze -->
+    <section id="classes" class="mb-5">
+      <h2>1. Classi &amp; Istanze</h2>
+      <p>Definisci una classe e il suo costruttore <code>__init__</code>:</p>
+      <pre><code class="python">class Person:
+    def __init__(self, name, age):
+        self.name = name      # attributo di istanza
+        self.age = age
+
+# Istanziare
+alice = Person("Alice", 30)
+print(alice.name, alice.age)  # Alice 30
+</code></pre>
+    </section>
+
+    <!-- 2. Metodi e attributi -->
+    <section id="methods" class="mb-5">
+      <h2>2. Membri di istanza &amp; di classe</h2>
+      <p>I metodi di istanza operano su <code>self</code>; le variabili di classe sono condivise:</p>
+      <pre><code class="python">class Counter:
+    total = 0              # variabile di classe
+
+    def __init__(self):
+        Counter.total += 1
+        self.id = Counter.total
+
+    def greet(self):
+        return f"Istanza {self.id} dice ciao"
+
+# Utilizzo
+c1 = Counter(); c2 = Counter()
+print(c1.greet(), c2.greet())
+print("Totale istanze:", Counter.total)
+</code></pre>
+    </section>
+
+    <!-- 3. Ereditarietà e polimorfismo -->
+    <section id="inheritance" class="mb-5">
+      <h2>3. Ereditarietà &amp; Polimorfismo</h2>
+      <p>Sottoclassa per estendere o sovrascrivere comportamenti:</p>
+      <pre><code class="python">class Animal:
+    def speak(self):
+        raise NotImplementedError
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+for pet in (Dog(), Cat()):
+    print(pet.speak())    # Woof! Meow!
+</code></pre>
+    </section>
+
+    <!-- 4. Metodi speciali -->
+    <section id="dunder" class="mb-5">
+      <h2>4. Metodi Speciali</h2>
+      <p>Implementa <code>__str__</code>, <code>__repr__</code>, <code>__eq__</code> per comportamenti avanzati:</p>
+      <pre><code class="python">class Point:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def __repr__(self):
+        return f"Point({self.x},{self.y})"
+
+    def __eq__(self, other):
+        return isinstance(other, Point) and (self.x, self.y)==(other.x, other.y)
+
+p1, p2 = Point(1,2), Point(1,2)
+print(p1, p2, p1==p2)   # Point(1,2) Point(1,2) True
+</code></pre>
+    </section>
+
+    <!-- 5. Incapsulamento e proprietà -->
+    <section id="encapsulation" class="mb-5">
+      <h2>5. Incapsulamento &amp; @property</h2>
+      <p>Usa il name mangling per attributi “privati” e <code>@property</code> per getter/setter:</p>
+      <pre><code class="python">class Account:
+    def __init__(self, bal):
+        self.__balance = bal
+
+    @property
+    def balance(self):
+        return self.__balance
+
+    @balance.setter
+    def balance(self, val):
+        if val < 0:
+            raise ValueError("Saldo negativo")
+        self.__balance = val
+
+acct = Account(100)
+print(acct.balance)      # 100
+acct.balance = 150
+# acct.balance = -50    # ValueError
+</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Definisci una classe <code>Rectangle</code> con <code>width</code>, <code>height</code> e un metodo <code>area()</code>.</li>
+        <li>Implementa una classe base <code>Vehicle</code> e le sottoclassi <code>Car</code>, <code>Bike</code> sovrascrivendo il metodo <code>move()</code>.</li>
+        <li>Crea una classe <code>Vector</code> che supporti +, -, * tramite <code>__add__</code>, <code>__sub__</code>, <code>__mul__</code>.</li>
+        <li>Usa <code>@property</code> per creare una proprietà di sola lettura <code>full_name</code> da <code>first_name</code> e <code>last_name</code>.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter10.html" class="btn btn-outline-secondary">&larr; Capitolo 10</a>
+      <a href="chapter12.html" class="btn btn-primary">Capitolo 12 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
