@@ -16,7 +16,6 @@
     rel="stylesheet"
     crossorigin="anonymous"
   />
-
   <!-- Highlight.js CSS -->
   <link
     rel="stylesheet"
@@ -72,7 +71,7 @@
       <h2>Obiettivi</h2>
       <ul>
         <li>Organizzare il codice in una cartella pacchetto con <code>__init__.py</code>.</li>
-        <li>Scrivere un <code>setup.py</code> utilizzando <code>setuptools.setup()</code>.</li>
+        <li>Scrivere un <code>setup.py</code> con <code>setuptools.setup()</code>.</li>
         <li>Configurare <code>pyproject.toml</code> e metadata dichiarativi.</li>
         <li>Costruire distribuzioni sorgente e wheel.</li>
         <li>Pubblicare pacchetti su Test PyPI e PyPI tramite Twine.</li>
@@ -131,7 +130,7 @@ dependencies = ["requests>=2.0"]</code></pre>
 
     <section id="build" class="mb-5">
       <h2>4. Costruzione delle distribuzioni</h2>
-      <pre><code class="bash"># installa build (opzionale)
+      <pre><code class="bash"># installa build tool (opzionale)
 python -m pip install --upgrade build
 
 # genera sdist e wheel
@@ -158,7 +157,7 @@ python -m twine upload dist/*</code></pre>
       <h2>Esercizi</h2>
       <ol>
         <li>Crea un pacchetto minimale in src/, scrivi setup.py e genera un sdist.</li>
-        <li>Aggiungi uno <code>entry_point</code> console_script e testalo localmente.</li>
+        <li>Aggiungi un console_script via entry_point e testalo localmente.</li>
         <li>Converti i metadata di setup.py in pyproject.toml e ricostruisci.</li>
         <li>Pubblica il pacchetto su Test PyPI e installalo da lì.</li>
       </ol>
@@ -179,17 +178,10 @@ python -m twine upload dist/*</code></pre>
     </small>
   </footer>
 
-  <!-- Bootstrap JS Bundle -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"
-  ></script>
-  <!-- Highlight.js JS -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>hljs.highlightAll();</script>
 </body>
 </html>
+```
