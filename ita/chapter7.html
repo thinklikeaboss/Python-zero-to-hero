@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description"
-        content="Capitolo 7 di Python Zero to Hero: impara a definire e chiamare funzioni, usare args/kwargs, docstring e strutturare moduli e pacchetti."/>
+        content="Capitolo 7 di Python Zero to Hero: impara a definire e chiamare funzioni, usare args/kwargs, docstring e organizzare moduli e pacchetti."/>
   <meta name="keywords"
         content="Python, funzioni, def, argomenti, return, docstring, scope, *args, **kwargs, moduli, pacchetti, import"/>
   <meta name="author" content="Luca Bocaletto"/>
@@ -77,7 +77,7 @@
       <h2>Obiettivi</h2>
       <ul>
         <li>Definire e chiamare funzioni con argomenti posizionali, keyword e di default.</li>
-        <li>Scrivere docstring chiare e ispezionarle con <code>help()</code>.</li>
+        <li>Scrivere docstring chiare e visualizzarle con <code>help()</code>.</li>
         <li>Comprendere scope locale vs globale; usare <code>global</code> se necessario.</li>
         <li>Usare <code>*args</code> e <code>**kwargs</code> per argomenti variabili.</li>
         <li>Creare e importare moduli e pacchetti; capire <code>__name__ == "__main__"</code>.</li>
@@ -87,9 +87,9 @@
     <!-- 1. Definizione di funzioni -->
     <section id="defining" class="mb-5">
       <h2>1. Definizione di funzioni</h2>
-      <p>Usa la parola chiave <code>def</code>. Specifica parametri e <code>return</code> un valore:</p>
+      <p>Usa <code>def</code>. Specifica i parametri e restituisci un valore con <code>return</code>:</p>
       <pre><code class="python">def greet(name):
-    """Ritorna una stringa di saluto per il nome dato."""
+    """Restituisce una stringa di saluto per il nome dato."""
     return f"Hello, {name}!"
 
 msg = greet("Alice")
@@ -105,7 +105,7 @@ print(power(2, 3))  # 8</code></pre>
     <!-- 2. Docstring & Scope -->
     <section id="docstrings" class="mb-5">
       <h2>2. Docstring & Scope</h2>
-      <p>Documenta le funzioni con una stringa tripla subito sotto <code>def</code>:</p>
+      <p>Documenta le funzioni con una stringa tripla subito dopo <code>def</code>:</p>
       <pre><code class="python">def add(a, b):
     """
     Somma due numeri.
@@ -128,7 +128,7 @@ def foo():
     return x
 
 print(foo(), x)  # 5 10</code></pre>
-      <p>Usa <code>global</code> per modificare una variabile di modulo:</p>
+      <p>Usa <code>global</code> per modificare variabili di modulo:</p>
       <pre><code class="python">counter = 0
 
 def inc():
@@ -150,7 +150,7 @@ print(summarize(1,2,3,4))  # 10</code></pre>
         print(f"{key} = {val}")
 
 config(host="localhost", port=8080)</code></pre>
-      <p>Combina entrambi:</p>
+      <p>Combine entrambi:</p>
       <pre><code class="python">def mixed(a, *args, **kwargs):
     print(a, args, kwargs)
 
@@ -160,7 +160,7 @@ mixed(1,2,3, x=10, y=20)</code></pre>
     <!-- 4. Moduli & Pacchetti -->
     <section id="modules" class="mb-5">
       <h2>4. Moduli &amp; Pacchetti</h2>
-      <p>Ogni file <code>.py</code> è un modulo. Importa con:</p>
+      <p>Ogni file <code>.py</code> è un modulo. Importalo con:</p>
       <pre><code class="python"># file: math_utils.py
 def square(x):
     return x*x
@@ -168,17 +168,17 @@ def square(x):
 # in un altro file
 import math_utils
 print(math_utils.square(5))</code></pre>
-      <p>Usa <code>from … import …</code> per importare nomi nello scope:</p>
+      <p>Usa <code>from … import …</code> per portare nomi nello scope:</p>
       <pre><code class="python">from math_utils import square
 print(square(6))</code></pre>
-      <p>Raggruppa moduli in una directory con <code>__init__.py</code> per creare un pacchetto:</p>
+      <p>Raggruppa moduli in una cartella con <code>__init__.py</code> per formare un pacchetto:</p>
       <pre><code class="bash">project/
 └── utils/
     ├── __init__.py
     └── math_utils.py</code></pre>
       <p>Proteggi il punto di ingresso dello script:</p>
       <pre><code class="python">if __name__ == "__main__":
-    # codice da eseguire direttamente
+    # codice eseguito direttamente
     pass</code></pre>
     </section>
 
@@ -187,9 +187,9 @@ print(square(6))</code></pre>
       <h2>Esercizi</h2>
       <ol>
         <li>Scrivi una funzione <code>multiply(a, b=1)</code> e testala con argomenti diversi.</li>
-        <li>Crea il modulo <code>stats.py</code> con <code>mean()</code> e <code>median()</code>, poi importalo ed usalo.</li>
-        <li>Implementa una funzione che accetta un numero qualsiasi di argomenti posizionali e keyword, e li stampa.</li>
-        <li>Crea un pacchetto <code>mypkg</code> con due moduli e mostra come importarli.</li>
+        <li>Crea un modulo <code>stats.py</code> con <code>mean()</code> e <code>median()</code>, poi importalo e usalo.</li>
+        <li>Implementa una funzione che accetta argomenti posizionali e keyword arbitrari e li stampa.</li>
+        <li>Costruisci un pacchetto <code>mypkg</code> con due moduli e mostra come importarli.</li>
       </ol>
     </section>
 
