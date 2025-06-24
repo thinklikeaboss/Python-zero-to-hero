@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 6 di Python Zero to Hero: impara le collezioni in Python—liste, tuple, set, dict, iterazione e comprensioni."/>
+  <meta name="keywords"
+        content="Python, collezioni, lista, tupla, set, dict, slicing, metodi, iterazione, comprensione"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 6 – Collezioni | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .method-table th, .method-table td { padding: .5rem; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter5.html">Capitolo 5</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter7.html">Capitolo 7</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">Repo GitHub</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 6: Collezioni</h1>
+      <p class="text-muted">
+        Esplora le collezioni built-in di Python: liste, tuple, set, dict, più iterazione e comprensioni.
+      </p>
+      <a href="src/chapter6.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter6.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Creare e manipolare oggetti <code>list</code>: indicizzazione, slicing, metodi.</li>
+        <li>Definire <code>tuple</code> per sequenze immutabili; unpacking.</li>
+        <li>Lavorare con <code>set</code>: unicità, unione, intersezione, differenza.</li>
+        <li>Gestire <code>dict</code>: accesso chiave–valore, metodi, iterazione.</li>
+        <li>Iterare sulle collezioni con <code>for</code>, <code>enumerate</code>, <code>zip</code>.</li>
+        <li>Costruire comprensioni di lista e dict per espressioni concise.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Liste -->
+    <section id="lists" class="mb-5">
+      <h2>1. Liste</h2>
+      <p>Sequenze ordinate e mutabili:</p>
+      <pre><code class="python"># Creazione
+fruits = ["apple", "banana", "cherry"]
+empty = []
+
+# Indicizzazione e slicing
+first = fruits[0]          # "apple"
+subset = fruits[1:3]       # ["banana", "cherry"]</code></pre>
+      <p>Metodi comuni:</p>
+      <table class="table table-sm table-bordered method-table">
+        <thead>
+          <tr><th>Metodo</th><th>Descrizione</th><th>Esempio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>append(x)</code></td><td>Aggiunge x alla fine</td><td><code>fruits.append("date")</code></td></tr>
+          <tr><td><code>insert(i, x)</code></td><td>Inserisce x nell’indice i</td><td><code>fruits.insert(1,"fig")</code></td></tr>
+          <tr><td><code>remove(x)</code></td><td>Rimuove la prima occorrenza di x</td><td><code>fruits.remove("banana")</code></td></tr>
+          <tr><td><code>pop([i])</code></td><td>Rimuove e restituisce elemento in i</td><td><code>fruits.pop(2)</code></td></tr>
+          <tr><td><code>sort()</code></td><td>Ordina in place</td><td><code>fruits.sort()</code></td></tr>
+          <tr><td><code>reverse()</code></td><td>Inverte in place</td><td><code>fruits.reverse()</code></td></tr>
+          <tr><td><code>extend(iter)</code></td><td>Aggiunge elementi dall’iterabile</td><td><code>fruits.extend(["kiwi"])</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. Tuple -->
+    <section id="tuples" class="mb-5">
+      <h2>2. Tuple</h2>
+      <p>Sequenze ordinate e immutabili:</p>
+      <pre><code class="python"># Creazione
+coords = (10, 20)
+single = (42,)        # virgola finale
+
+# Unpacking
+x, y = coords         # x=10, y=20</code></pre>
+      <p>Le tuple supportano indicizzazione e slicing ma non modifiche.</p>
+    </section>
+
+    <!-- 3. Set -->
+    <section id="sets" class="mb-5">
+      <h2>3. Set</h2>
+      <p>Collezioni non ordinate di elementi unici:</p>
+      <pre><code class="python"># Creazione
+s = {1, 2, 3}
+empty_set = set()
+
+# Aggiungi/rimuovi
+s.add(4)
+s.remove(2)</code></pre>
+      <p>Operazioni sui set:</p>
+      <ul>
+        <li><code>union</code>: <code>a | b</code></li>
+        <li><code>intersection</code>: <code>a & b</code></li>
+        <li><code>difference</code>: <code>a - b</code></li>
+        <li><code>symmetric_difference</code>: <code>a ^ b</code></li>
+      </ul>
+    </section>
+
+    <!-- 4. Dizionari -->
+    <section id="dicts" class="mb-5">
+      <h2>4. Dizionari</h2>
+      <p>Mappature chiave–valore:</p>
+      <pre><code class="python"># Creazione
+person = {"name": "Alice", "age": 30}
+empty = {}
+
+# Accesso e modifica
+name = person["name"]
+person["city"] = "Rome"</code></pre>
+      <p>Metodi utili:</p>
+      <ul>
+        <li><code>keys()</code>, <code>values()</code>, <code>items()</code></li>
+        <li><code>get(key, default)</code>, <code>pop(key)</code></li>
+        <li><code>update(other_dict)</code></li>
+      </ul>
+    </section>
+
+    <!-- 5. Iterazione e Comprensioni -->
+    <section id="iteration" class="mb-5">
+      <h2>5. Iterazione e Comprensioni</h2>
+      <h3>a) Iterazione</h3>
+      <pre><code class="python">for item in fruits:
+    print(item)
+
+for i, v in enumerate(fruits, 1):
+    print(i, v)
+
+for k, v in person.items():
+    print(k, v)</code></pre>
+      <h3>b) Comprensioni di lista</h3>
+      <pre><code class="python"># quadrati dei numeri pari da 0 a 9
+squares = [x*x for x in range(10) if x % 2 == 0]
+
+# comprensione annidata
+pairs = [(i, j) for i in [1,2] for j in ['a','b']]</code></pre>
+      <h3>c) Comprensioni di dict</h3>
+      <pre><code class="python"># mappa numero al suo quadrato
+sq_map = {x: x*x for x in range(5)}</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Crea una lista di numeri da 1 a 20, estrai quelli con indice pari tramite slicing.</li>
+        <li>Usa una tupla per memorizzare coordinate e scomponile.</li>
+        <li>Data due set, calcola unione, intersezione e differenza.</li>
+        <li>Costruisci un dizionario da due liste: chiavi e valori.</li>
+        <li>Scrivi una comprensione di lista per filtrare e trasformare una lista di stringhe.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter5.html" class="btn btn-outline-secondary">&larr; Capitolo 5</a>
+      <a href="chapter7.html" class="btn btn-primary">Capitolo 7 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
