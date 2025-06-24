@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 19 di Python Zero to Hero: impara a effettuare benchmark e profiling con timeit, cProfile, memory_profiler e ottimizzare i punti critici."/>
+  <meta name="keywords"
+        content="Python, profiling, performance, timeit, cProfile, pstats, line_profiler, memory_profiler, ottimizzazione"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 19 – Profiling & Ottimizzazione delle Prestazioni | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter18.html">Capitolo 18</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter20.html">Capitolo 20</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 19: Profiling &amp; Ottimizzazione delle Prestazioni</h1>
+      <p class="text-muted">
+        Misura le prestazioni del tuo codice, individua i punti critici e applica ottimizzazioni con strumenti built-in e di terze parti.
+      </p>
+      <a href="src/chapter19.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter19.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Misurare il tempo di esecuzione con <code>timeit</code>.</li>
+        <li>Profilare funzioni con <code>cProfile</code> e <code>pstats</code>.</li>
+        <li>Analizzare i tempi linea per linea con <code>line_profiler</code>.</li>
+        <li>Analizzare l’uso di memoria con <code>memory_profiler</code>.</li>
+        <li>Applicare semplici ottimizzazioni a livello di codice.</li>
+      </ul>
+    </section>
+
+    <section id="timeit" class="mb-5">
+      <h2>1. Misurare il Tempo con <code>timeit</code></h2>
+      <p>Usa <code>timeit</code> per micro-benchmark:</p>
+      <pre><code class="python">import timeit
+
+# one-liner
+print(timeit.timeit("sum(range(1000))", number=10000))
+
+# con Timer
+timer = timeit.Timer("x*x for x in range(1000)")
+print(timer.timeit(number=5000))</code></pre>
+    </section>
+
+    <section id="cprofile" class="mb-5">
+      <h2>2. Profiling con <code>cProfile</code></h2>
+      <p>Raccogli statistiche a livello di funzione:</p>
+      <pre><code class="python">import cProfile, pstats
+
+def work():
+    total = 0
+    for i in range(100000):
+        total += i
+    return total
+
+prof = cProfile.Profile()
+prof.enable()
+work()
+prof.disable()
+
+stats = pstats.Stats(prof)
+stats.sort_stats("cumtime").print_stats(10)</code></pre>
+    </section>
+
+    <section id="line-profiler" class="mb-5">
+      <h2>3. Profiling Linea per Linea</h2>
+      <p>Installa con <code>pip install line_profiler</code> e decora la funzione:</p>
+      <pre><code class="python">@profile
+def compute():
+    total = 0
+    for i in range(100000):
+        total += i*i
+    return total
+
+if __name__ == "__main__":
+    compute()</code></pre>
+      <p>Avvia con <code>kernprof -l -v chapter19.py</code> per i tempi linea per linea.</p>
+    </section>
+
+    <section id="memory-profiler" class="mb-5">
+      <h2>4. Memory Profiling</h2>
+      <p>Installa con <code>pip install memory_profiler</code> e usa:</p>
+      <pre><code class="python">from memory_profiler import profile
+
+@profile
+def load_data():
+    data = [i for i in range(1000000)]
+    return data
+
+if __name__ == "__main__":
+    load_data()</code></pre>
+      <p>Avvia con <code>python -m memory_profiler chapter19.py</code>.</p>
+    </section>
+
+    <section id="optimization" class="mb-5">
+      <h2>5. Consigli di Ottimizzazione</h2>
+      <ul>
+        <li>Preferisci built-in come <code>sum()</code>, <code>map()</code> e comprensioni anziché loop manuali.</li>
+        <li>Cache delle chiamate costose con <code>functools.lru_cache</code>.</li>
+        <li>Usa variabili locali nei loop per velocità.</li>
+        <li>Evita lookup globali assegnando funzioni frequentemente usate a variabili locali.</li>
+        <li>Valuta <code>numpy</code> o estensioni C per loop numerici intensivi.</li>
+      </ul>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Valuta due implementazioni di Fibonacci con <code>timeit</code>.</li>
+        <li>Profila uno script di trasformazione dati con <code>cProfile</code> e ottimizza il punto critico.</li>
+        <li>Usa <code>line_profiler</code> su una funzione con loop annidati e velocizza la linea più critica.</li>
+        <li>Misura l’uso di memoria di un’ampia lista vs espressione generatrice con <code>memory_profiler</code>.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter18.html" class="btn btn-outline-secondary">&larr; Capitolo 18</a>
+      <a href="chapter20.html" class="btn btn-primary">Capitolo 20 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
