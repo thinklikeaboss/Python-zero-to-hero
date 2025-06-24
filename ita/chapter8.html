@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 8 di Python Zero to Hero: input/output su file da console—leggi/scrivi file di testo, CSV e binari usando context manager."/>
+  <meta name="keywords"
+        content="Python, I/O file, open, read, write, CSV, binario, with, context manager"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 8 – I/O su file | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .io-table th, .io-table td { padding: .5rem; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter7.html">Capitolo 7</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter9.html">Capitolo 9</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 8: I/O su file</h1>
+      <p class="text-muted">
+        Impara a leggere e scrivere file di testo, CSV e binari da console usando Python.
+      </p>
+      <a href="src/chapter8.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter8.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Aprire file in modalità testo e binaria per lettura e scrittura.</li>
+        <li>Leggere l’intero file, riga per riga o a blocchi.</li>
+        <li>Scrivere dati di testo e binari, usare <code>writelines()</code>.</li>
+        <li>Usare il modulo <code>csv</code> per analizzare e generare file CSV.</li>
+        <li>Gestire i file in sicurezza con context manager (<code>with</code>).</li>
+      </ul>
+    </section>
+
+    <section id="read-text" class="mb-5">
+      <h2>1. Lettura di file di testo</h2>
+      <p>Apri in modalità lettura (<code>'r'</code>) e poi:</p>
+      <pre><code class="python">with open("data.txt", "r", encoding="utf-8") as f:
+    content = f.read()         # intero file come stringa
+    lines   = f.readlines()    # lista di righe
+    f.seek(0)                  # torna all’inizio
+    for line in f:             # itera riga per riga
+        print(line.strip())</code></pre>
+    </section>
+
+    <section id="write-text" class="mb-5">
+      <h2>2. Scrittura di file di testo</h2>
+      <p>Apri in modalità scrittura (<code>'w'</code>) o aggiunta (<code>'a'</code>):</p>
+      <pre><code class="python">lines = ["Prima riga\n", "Seconda riga\n"]
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("Intestazione\n")
+    f.writelines(lines)      # scrive più righe in una volta</code></pre>
+      <p>Modalità:</p>
+      <table class="table table-sm table-bordered io-table">
+        <thead>
+          <tr><th>Modalità</th><th>Descrizione</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>'r'</code></td><td>Lettura (default), il file deve esistere</td></tr>
+          <tr><td><code>'w'</code></td><td>Scrittura, tronca o crea</td></tr>
+          <tr><td><code>'a'</code></td><td>Aggiunta, crea se non esiste</td></tr>
+          <tr><td><code>'r+'</code></td><td>Lettura/scrittura</td></tr>
+          <tr><td><code>'b'</code> suffisso</td><td>Modalità binaria</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="csv" class="mb-5">
+      <h2>3. Gestione file CSV</h2>
+      <p>Usa il modulo integrato <code>csv</code>:</p>
+      <h3>a) Lettura CSV</h3>
+      <pre><code class="python">import csv
+
+with open("records.csv", newline="", encoding="utf-8") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)           # ogni riga è una lista di stringhe</code></pre>
+      <h3>b) Scrittura CSV</h3>
+      <pre><code class="python">import csv
+
+rows = [["Nome","Età"], ["Alice","30"], ["Bob","25"]]
+with open("out.csv", "w", newline="", encoding="utf-8") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows(rows)</code></pre>
+    </section>
+
+    <section id="binary" class="mb-5">
+      <h2>4. I/O su file binari</h2>
+      <p>Apri in modalità binaria (<code>'rb'</code>, <code>'wb'</code>):</p>
+      <pre><code class="python"># Leggi byte immagine
+with open("image.png", "rb") as fin:
+    data = fin.read()
+
+# Scrivi byte su nuovo file
+with open("copy.png", "wb") as fout:
+    fout.write(data)</code></pre>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Crea un file di testo con dieci righe, poi scrivi uno script per contare e stampare il numero di righe.</li>
+        <li>Costruisci un file CSV di prodotti (nome, prezzo), poi leggilo e calcola il costo totale.</li>
+        <li>Scrivi una funzione per aggiungere una voce di log con timestamp a un file di log.</li>
+        <li>Copia un file binario (esempio: un’immagine) da sorgente a destinazione usando blocchi.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter7.html" class="btn btn-outline-secondary">&larr; Capitolo 7</a>
+      <a href="chapter9.html" class="btn btn-primary">Capitolo 9 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
