@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 9 di Python Zero to Hero: impara il trattamento degli errori, il sollevamento di eccezioni, eccezioni personalizzate e l’uso delle assert."/>
+  <meta name="keywords"
+        content="Python, errori, eccezioni, try, except, else, finally, raise, eccezione personalizzata, assert"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 9 – Errori & Eccezioni | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .exception-table th, .exception-table td { padding: .5rem; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter8.html">Capitolo 8</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter10.html">Capitolo 10</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 9: Errori & Eccezioni</h1>
+      <p class="text-muted">
+        Gestisci con eleganza gli errori a runtime, solleva eccezioni personalizzate e usa assert per il debug.
+      </p>
+      <a href="src/chapter9.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter9.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Distingui tra errori e eccezioni in Python.</li>
+        <li>Usa <code>try</code>/<code>except</code> per catturare eccezioni.</li>
+        <li>Sfrutta le clausole <code>else</code> e <code>finally</code>.</li>
+        <li>Solleva eccezioni built-in con <code>raise</code>.</li>
+        <li>Definisci e usa eccezioni personalizzate.</li>
+        <li>Impiega <code>assert</code> per controlli di coerenza.</li>
+      </ul>
+    </section>
+
+    <section id="errors-vs-exceptions" class="mb-5">
+      <h2>1. Errori vs Eccezioni</h2>
+      <p>
+        Un errore è un problema nel codice (sintassi, indentazione) rilevato prima dell’esecuzione.  
+        Un’eccezione è un evento a runtime catturabile e gestibile.
+      </p>
+      <pre><code class="python"># SyntaxError: mancano le parentesi
+print "Hello"
+
+# ZeroDivisionError a runtime
+print(1/0)</code></pre>
+    </section>
+
+    <section id="try-except" class="mb-5">
+      <h2>2. Blocco try/except</h2>
+      <p>
+        Includi il codice che può fallire in <code>try</code>, cattura eccezioni specifiche in <code>except</code>.
+      </p>
+      <pre><code class="python">try:
+    result = 10 / int(input("Inserisci un divisore: "))
+    print("Risultato:", result)
+except ValueError:
+    print("Per favore inserisci un intero valido.")
+except ZeroDivisionError:
+    print("Non è possibile dividere per zero.")</code></pre>
+    </section>
+
+    <section id="else-finally" class="mb-5">
+      <h2>3. else & finally</h2>
+      <p>
+        <code>else</code> si esegue se non si verifica eccezione;  
+        <code>finally</code> viene sempre eseguito.
+      </p>
+      <pre><code class="python">try:
+    f = open("data.txt")
+    data = f.read()
+except FileNotFoundError:
+    print("File mancante.")
+else:
+    print("Dati letti:", data[:50])
+finally:
+    f.close()
+    print("File chiuso.")</code></pre>
+    </section>
+
+    <section id="raising" class="mb-5">
+      <h2>4. Sollevare eccezioni</h2>
+      <p>
+        Usa <code>raise</code> per innescare manualmente un’eccezione.
+      </p>
+      <pre><code class="python">def check_age(age):
+    if age < 0:
+        raise ValueError("L'età non può essere negativa")
+    return True
+
+# chiamata
+check_age(-5)  # ValueError: L'età non può essere negativa</code></pre>
+    </section>
+
+    <section id="custom-exceptions" class="mb-5">
+      <h2>5. Eccezioni personalizzate</h2>
+      <p>
+        Estendi <code>Exception</code> per definire le tue eccezioni.
+      </p>
+      <pre><code class="python">class InvalidConfigurationError(Exception):
+    """Sollevata quando la configurazione è invalida."""
+    pass
+
+def load_config(cfg):
+    if "host" not in cfg:
+        raise InvalidConfigurationError("Manca il parametro host")</code></pre>
+      <p>Puoi catturarla come qualsiasi eccezione built-in:</p>
+      <pre><code class="python">try:
+    load_config({})
+except InvalidConfigurationError as e:
+    print("Errore di configurazione:", e)</code></pre>
+    </section>
+
+    <section id="assertions" class="mb-5">
+      <h2>6. Assertions</h2>
+      <p>
+        Usa <code>assert</code> per controlli di coerenza interni.  
+        Possono essere disabilitate con l’opzione <code>-O</code>.
+      </p>
+      <pre><code class="python">def factorial(n):
+    assert n >= 0, "n deve essere non negativo"
+    return 1 if n in (0,1) else n * factorial(n-1)
+
+factorial(-1)  # AssertionError: n deve essere non negativo</code></pre>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Scrivi una funzione che legge un intero e riprova finché non ne inserisci uno valido.</li>
+        <li>Crea un’eccezione personalizzata <code>AuthenticationError</code> e usala in una funzione di login.</li>
+        <li>Implementa la copia di un file con <code>try</code>/<code>finally</code> per garantire la chiusura dei file.</li>
+        <li>Aggiungi <code>assert</code> per validare gli input di funzioni in un modulo calcolatore.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter8.html" class="btn btn-outline-secondary">&larr; Capitolo 8</a>
+      <a href="chapter10.html" class="btn btn-primary">Capitolo 10 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
