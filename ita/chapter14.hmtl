@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 14 di Python Zero to Hero: lavora con JSON, XML e API HTTP usando i moduli built-in e la libreria requests."/>
+  <meta name="keywords"
+        content="Python, JSON, xml, HTTP, requests, api, json.loads, json.dumps, xml.etree, urllib"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 14 – JSON, XML &amp; Richieste HTTP | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter13.html">Capitolo 13</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter15.html">Capitolo 15</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 14: JSON, XML &amp; Richieste HTTP</h1>
+      <p class="text-muted">
+        Analizza e genera JSON e XML e interagisci con API web tramite richieste HTTP.
+      </p>
+      <a href="src/chapter14.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter14.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Caricare e serializzare JSON con il modulo <code>json</code>.</li>
+        <li>Analizzare XML usando <code>xml.etree.ElementTree</code>.</li>
+        <li>Eseguire richieste HTTP GET e POST con <code>requests</code>.</li>
+        <li>Gestire parametri di query, header e body JSON.</li>
+        <li>Processare risposte API e gestire errori.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Gestione JSON -->
+    <section id="json" class="mb-5">
+      <h2>1. Gestione JSON</h2>
+      <p>Converti tra testo JSON e oggetti Python:</p>
+      <pre><code class="python">import json
+
+data = {"user": "alice", "active": True, "roles": ["admin","user"]}
+# serializza
+text = json.dumps(data, indent=2)
+# deserializza
+obj = json.loads(text)
+print(obj["roles"])  # ['admin', 'user']</code></pre>
+    </section>
+
+    <!-- 2. Parsing XML -->
+    <section id="xml" class="mb-5">
+      <h2>2. Parsing XML</h2>
+      <p>Usa <code>xml.etree.ElementTree</code> per leggere e navigare XML:</p>
+      <pre><code class="python">import xml.etree.ElementTree as ET
+
+xml = "<root><item id='1'>Foo</item></root>"
+root = ET.fromstring(xml)
+for item in root.findall("item"):
+    print(item.get("id"), item.text)  # 1 Foo</code></pre>
+    </section>
+
+    <!-- 3. HTTP con requests -->
+    <section id="http" class="mb-5">
+      <h2>3. HTTP con requests</h2>
+      <p>Installa con <code>pip install requests</code>. Esempi GET e POST:</p>
+      <pre><code class="python">import requests
+
+# GET con parametri
+resp = requests.get("https://api.example.com/data", params={"q":"python"})
+print(resp.status_code, resp.json())
+
+# POST con body JSON
+payload = {"name":"bob","age":30}
+resp = requests.post("https://api.example.com/users", json=payload)
+print(resp.status_code, resp.text)
+</code></pre>
+      <p>Imposta header e timeout:</p>
+      <pre><code class="python">headers = {"Authorization":"Bearer TOKEN"}
+resp = requests.get("https://api.example.com/secure", headers=headers, timeout=5)
+</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Leggi un file JSON, modificalo e riscrivilo.</li>
+        <li>Analizza un file XML di libri e stampa i titoli pubblicati dopo il 2000.</li>
+        <li>Usa <code>requests</code> per recuperare i dati di un utente GitHub (<code>https://api.github.com/users/&lt;username&gt;</code>).</li>
+        <li>Invia un payload JSON a un’API di test (es. <code>https://httpbin.org/post</code>) e mostra la risposta.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter13.html" class="btn btn-outline-secondary">&larr; Capitolo 13</a>
+      <a href="chapter15.html" class="btn btn-primary">Capitolo 15 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
