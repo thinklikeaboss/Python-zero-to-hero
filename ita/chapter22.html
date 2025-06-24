@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 22 di Python Zero to Hero: costruisci strumenti da riga di comando con argparse, Click e Typer."/>
+  <meta name="keywords"
+        content="Python, CLI, linea di comando, argparse, click, typer, console script, strumenti CLI"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 22 – Strumenti CLI con argparse, Click &amp; Typer | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter21.html">Capitolo 21</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter23.html">Capitolo 23</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">Repo GitHub</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 22: Strumenti CLI con argparse, Click &amp; Typer</h1>
+      <p class="text-muted">
+        Impara a creare potenti interfacce da riga di comando usando la libreria standard e framework popolari.
+      </p>
+      <a href="src/chapter22.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter22.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Usare <code>argparse</code> per analizzare argomenti e opzioni.</li>
+        <li>Creare comandi e sottocomandi con <code>Click</code>.</li>
+        <li>Sfruttare <code>Typer</code> e type hint per costruire CLI.</li>
+        <li>Pacchettizzare lo strumento come script console.</li>
+        <li>Gestire validazione, messaggi di aiuto ed errori.</li>
+      </ul>
+    </section>
+
+    <section id="argparse" class="mb-5">
+      <h2>1. Nozioni di base su argparse</h2>
+      <pre><code class="python">import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Saluta un utente.")
+    parser.add_argument("name", help="Nome dell'utente")
+    parser.add_argument("-t", "--times", type=int, default=1,
+                        help="Numero di saluti")
+    args = parser.parse_args()
+
+    for _ in range(args.times):
+        print(f"Hello, {args.name}!")
+
+if __name__ == "__main__":
+    main()</code></pre>
+      <p>Esegui: <code>python chapter22.py Alice -t 3</code></p>
+    </section>
+
+    <section id="click" class="mb-5">
+      <h2>2. Libreria Click</h2>
+      <pre><code class="python">import click
+
+@click.command()
+@click.argument("name")
+@click.option("--times", default=1, help="Numero di saluti")
+def cli(name, times):
+    """Saluta un utente più volte."""
+    for _ in range(times):
+        click.echo(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    cli()</code></pre>
+      <p>Installa: <code>pip install click</code>. Esegui: <code>python chapter22.py Bob --times 2</code></p>
+    </section>
+
+    <section id="typer" class="mb-5">
+      <h2>3. Typer & Type Hints</h2>
+      <pre><code class="python">import typer
+
+app = typer.Typer()
+
+@app.command()
+def greet(name: str, times: int = 1):
+    """Saluta un utente più volte."""
+    for _ in range(times):
+        typer.echo(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    app()</code></pre>
+      <p>Installa: <code>pip install typer[all]</code>. Esegui: <code>python chapter22.py greet Carol --times 3</code></p>
+    </section>
+
+    <section id="packaging" class="mb-5">
+      <h2>4. Pacchettizzare come Script Console</h2>
+      <p>Aggiungi in <code>setup.py</code> o <code>pyproject.toml</code>:</p>
+      <pre><code class="toml">[project.scripts]
+mycli = "mypackage.cli:app"</code></pre>
+      <p>Dopo l’installazione:<code>mycli --help</code></p>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Estendi l’esempio con <code>argparse</code> aggiungendo il flag <code>--uppercase</code>.</li>
+        <li>Crea un gruppo di comandi Click con due sottocomandi: <code>greet</code> e <code>farewell</code>.</li>
+        <li>Costruisci un’app Typer con comandi per aggiungere/listare/rimuovere elementi da una to-do list in memoria.</li>
+        <li>Pacchettizza l’app Typer e installala localmente come <code>todo-cli</code>.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter21.html" class="btn btn-outline-secondary">&larr; Capitolo 21</a>
+      <a href="chapter23.html" class="btn btn-primary">Capitolo 23 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <!-- Highlight.js JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
