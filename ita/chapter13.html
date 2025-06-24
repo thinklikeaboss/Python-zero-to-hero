@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 13 di Python Zero to Hero: esplora concorrenza e parallelismo con threading, multiprocessing, futures e asyncio."/>
+  <meta name="keywords"
+        content="Python, concorrenza, parallelismo, threading, multiprocessing, concurrent.futures, asyncio, event loop"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 13 – Concorrenza & Parallelismo | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter12.html">Capitolo 12</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter14.html">Capitolo 14</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 13: Concorrenza &amp; Parallelismo</h1>
+      <p class="text-muted">
+        Impara a scrivere codice concorrente e parallelo in Python usando thread, processi, futures e asyncio.
+      </p>
+      <a href="src/chapter13.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter13.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Usare <code>threading.Thread</code> e <code>Lock</code> per thread semplici.</li>
+        <li>Sfruttare <code>multiprocessing.Process</code> e pool per compiti CPU-bound.</li>
+        <li>Utilizzare <code>concurrent.futures</code> per un'interfaccia unificata.</li>
+        <li>Scrivere coroutine <code>asyncio</code> con <code>async</code>/<code>await</code>.</li>
+        <li>Comprendere il GIL di Python e quando usare thread vs processi.</li>
+      </ul>
+    </section>
+
+    <section id="threading" class="mb-5">
+      <h2>1. threading</h2>
+      <p>Avvia thread leggeri:</p>
+      <pre><code class="python">import threading
+
+def worker(n):
+    print(f"Thread {n} avviato")
+    import time; time.sleep(0.5)
+    print(f"Thread {n} terminato")
+
+threads = []
+for i in range(3):
+    t = threading.Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+</code></pre>
+      <p>Proteggi dati condivisi con un <code>Lock</code>:</p>
+      <pre><code class="python">lock = threading.Lock()
+counter = 0
+
+def safe_increment():
+    global counter
+    with lock:
+        temp = counter
+        temp += 1
+        counter = temp
+</code></pre>
+    </section>
+
+    <section id="multiprocessing" class="mb-5">
+      <h2>2. multiprocessing</h2>
+      <p>Esegui codice in processi separati:</p>
+      <pre><code class="python">from multiprocessing import Process, Pool
+
+def worker(x):
+    print(f"Processo {x}")
+def f(x):
+    return x*x
+
+if __name__ == "__main__":
+    procs = [Process(target=worker, args=(i,)) for i in range(2)]
+    for p in procs:
+        p.start()
+    for p in procs:
+        p.join()
+
+    with Pool(4) as pool:
+        print(pool.map(f, [1,2,3,4]))
+</code></pre>
+      <p>Multiprocessing aggira il GIL per compiti CPU-bound.</p>
+    </section>
+
+    <section id="futures" class="mb-5">
+      <h2>3. concurrent.futures</h2>
+      <p>API high-level unificata:</p>
+      <pre><code class="python">from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+
+def square(x): return x*x
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    print("Threads:", list(executor.map(square, range(5))))
+
+with ProcessPoolExecutor(max_workers=3) as executor:
+    print("Processi:", list(executor.map(square, range(5))))
+</code></pre>
+    </section>
+
+    <section id="asyncio" class="mb-5">
+      <h2>4. asyncio</h2>
+      <p>Scrivi coroutine asincrone:</p>
+      <pre><code class="python">import asyncio
+
+async def say_after(delay, msg):
+    await asyncio.sleep(delay)
+    print(msg)
+
+async def main():
+    task1 = asyncio.create_task(say_after(1, "hello"))
+    task2 = asyncio.create_task(say_after(2, "world"))
+    print("Avviate le task")
+    await task1
+    await task2
+
+asyncio.run(main())
+</code></pre>
+      <p>Usa <code>asyncio.gather()</code> per eseguire coroutine in parallelo.</p>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Scrivi un contatore con thread che incrementa in sicurezza una variabile condivisa 10.000 volte.</li>
+        <li>Calcola i fattoriali da 1 a 10 in parallelo usando un pool di processi.</li>
+        <li>Usa <code>ThreadPoolExecutor</code> per recuperare URL concorrenti (usa <code>requests</code>).</li>
+        <li>Scrivi un server e client TCP echo con <code>asyncio</code>.</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter12.html" class="btn btn-outline-secondary">&larr; Capitolo 12</a>
+      <a href="chapter14.html" class="btn btn-primary">Capitolo 14 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
