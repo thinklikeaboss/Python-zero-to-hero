@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 15 di Python Zero to Hero: esplora l'analisi dati con pandas e NumPy—array, Series, operazioni su DataFrame e grafici base."/>
+  <meta name="keywords"
+        content="Python, pandas, NumPy, DataFrame, Series, array, analisi dati, aggregazione, grafici"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 15 – Analisi Dati con pandas &amp; NumPy | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter14.html">Capitolo 14</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter16.html">Capitolo 16</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 15: Analisi Dati con pandas &amp; NumPy</h1>
+      <p class="text-muted">
+        Impara a manipolare array numerici con NumPy e dati tabulari con pandas, inclusi aggregazioni e grafici base.
+      </p>
+      <a href="src/chapter15.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter15.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Creare e manipolare oggetti <code>numpy.ndarray</code>.</li>
+        <li>Caricare e ispezionare dati con <code>pandas.Series</code> e <code>DataFrame</code>.</li>
+        <li>Eseguire indicizzazione, slicing e selezione booleana in pandas.</li>
+        <li>Calcolare statistiche descrittive e aggregazioni group-by.</li>
+        <li>Gestire dati mancanti e applicare funzioni con <code>apply</code>.</li>
+        <li>Visualizzare dati con i grafici integrati di pandas (matplotlib).</li>
+      </ul>
+    </section>
+
+    <section id="numpy" class="mb-5">
+      <h2>1. Array NumPy</h2>
+      <pre><code class="python">import numpy as np
+
+# array 1D
+arr = np.array([1, 2, 3, 4])
+# array 2D
+mat = np.arange(9).reshape(3, 3)
+print(arr)
+print(mat)</code></pre>
+      <pre><code class="python"># operazioni elemento-per-elemento
+print(arr + 10)
+# statistiche
+print("mean:", arr.mean(), "sum:", arr.sum())</code></pre>
+    </section>
+
+    <section id="pandas" class="mb-5">
+      <h2>2. pandas Series &amp; DataFrame</h2>
+      <pre><code class="python">import pandas as pd
+
+# crea Series
+s = pd.Series([10, 20, 30], index=['a','b','c'])
+# crea DataFrame
+df = pd.DataFrame({
+    'col1': [1,2,3],
+    'col2': ['x','y','z']
+})
+print(s)
+print(df.head())</code></pre>
+      <pre><code class="python"># leggi CSV
+df = pd.read_csv('data.csv')
+print(df.info())
+print(df.describe())</code></pre>
+    </section>
+
+    <section id="selection" class="mb-5">
+      <h2>3. Indicizzazione &amp; Selezione</h2>
+      <pre><code class="python"># basato su etichette
+print(df.loc[0, 'col1'])
+# basato su posizione
+print(df.iloc[0:2, 0:2])
+# filtro booleano
+print(df[df['col1'] > 1])</code></pre>
+    </section>
+
+    <section id="groupby" class="mb-5">
+      <h2>4. Aggregazione &amp; GroupBy</h2>
+      <pre><code class="python"># statistiche riassuntive
+print(df['col1'].mean(), df['col1'].sum())
+
+# group by
+grouped = df.groupby('col2')['col1'].agg(['mean','count'])
+print(grouped)</code></pre>
+    </section>
+
+    <section id="missing-apply" class="mb-5">
+      <h2>5. Dati Mancanti &amp; apply()</h2>
+      <pre><code class="python"># riempi valori mancanti
+df['col1'] = df['col1'].fillna(0)
+# applica funzione
+df['col3'] = df['col1'].apply(lambda x: x**2)</code></pre>
+    </section>
+
+    <section id="plotting" class="mb-5">
+      <h2>6. Grafici Base</h2>
+      <pre><code class="python">import matplotlib.pyplot as plt
+
+# grafico a linee
+df['col1'].plot(title='Col1 nel tempo')
+plt.show()
+
+# grafico a barre
+df.groupby('col2')['col1'].sum().plot(kind='bar')
+plt.show()</code></pre>
+    </section>
+
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Carica il dataset Iris in un DataFrame e calcola la lunghezza media del petalo per specie.</li>
+        <li>Identifica ed elimina righe con valori mancanti in un CSV di esempio.</li>
+        <li>Disegna un istogramma di una colonna numerica e salvalo su file.</li>
+        <li>Usa <code>apply</code> per normalizzare una colonna (scaling min–max).</li>
+      </ol>
+    </section>
+
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter14.html" class="btn btn-outline-secondary">&larr; Capitolo 14</a>
+      <a href="chapter16.html" class="btn btn-primary">Capitolo 16 &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
