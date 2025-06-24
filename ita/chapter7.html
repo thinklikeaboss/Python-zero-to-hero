@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 7 di Python Zero to Hero: impara a definire e chiamare funzioni, usare args/kwargs, docstring e strutturare moduli e pacchetti."/>
+  <meta name="keywords"
+        content="Python, funzioni, def, argomenti, return, docstring, scope, *args, **kwargs, moduli, pacchetti, import"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 7 – Funzioni & Moduli | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter6.html">Capitolo 6</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter8.html">Capitolo 8</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 7: Funzioni & Moduli</h1>
+      <p class="text-muted">
+        Definisci funzioni riutilizzabili, documentale con docstring, gestisci argomenti flessibili e organizza il codice in moduli e pacchetti.
+      </p>
+      <a href="src/chapter7.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter7.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Definire e chiamare funzioni con argomenti posizionali, keyword e di default.</li>
+        <li>Scrivere docstring chiare e ispezionarle con <code>help()</code>.</li>
+        <li>Comprendere scope locale vs globale; usare <code>global</code> se necessario.</li>
+        <li>Usare <code>*args</code> e <code>**kwargs</code> per argomenti variabili.</li>
+        <li>Creare e importare moduli e pacchetti; capire <code>__name__ == "__main__"</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Definizione di funzioni -->
+    <section id="defining" class="mb-5">
+      <h2>1. Definizione di funzioni</h2>
+      <p>Usa la parola chiave <code>def</code>. Specifica parametri e <code>return</code> un valore:</p>
+      <pre><code class="python">def greet(name):
+    """Ritorna una stringa di saluto per il nome dato."""
+    return f"Hello, {name}!"
+
+msg = greet("Alice")
+print(msg)  # Hello, Alice!</code></pre>
+      <p>I parametri possono avere valori di default:</p>
+      <pre><code class="python">def power(base, exp=2):
+    return base ** exp
+
+print(power(5))     # 25
+print(power(2, 3))  # 8</code></pre>
+    </section>
+
+    <!-- 2. Docstring & Scope -->
+    <section id="docstrings" class="mb-5">
+      <h2>2. Docstring & Scope</h2>
+      <p>Documenta le funzioni con una stringa tripla subito sotto <code>def</code>:</p>
+      <pre><code class="python">def add(a, b):
+    """
+    Somma due numeri.
+
+    Args:
+        a (int): primo addendo
+        b (int): secondo addendo
+
+    Returns:
+        int: somma di a e b
+    """
+    return a + b
+
+help(add)</code></pre>
+      <p>Le variabili dentro le funzioni sono locali per default:</p>
+      <pre><code class="python">x = 10
+
+def foo():
+    x = 5  # x locale
+    return x
+
+print(foo(), x)  # 5 10</code></pre>
+      <p>Usa <code>global</code> per modificare una variabile di modulo:</p>
+      <pre><code class="python">counter = 0
+
+def inc():
+    global counter
+    counter += 1</code></pre>
+    </section>
+
+    <!-- 3. *args & **kwargs -->
+    <section id="varargs" class="mb-5">
+      <h2>3. *args &amp; **kwargs</h2>
+      <p>Accetta argomenti posizionali arbitrari:</p>
+      <pre><code class="python">def summarize(*args):
+    return sum(args)
+
+print(summarize(1,2,3,4))  # 10</code></pre>
+      <p>Accetta argomenti keyword arbitrari:</p>
+      <pre><code class="python">def config(**kwargs):
+    for key, val in kwargs.items():
+        print(f"{key} = {val}")
+
+config(host="localhost", port=8080)</code></pre>
+      <p>Combina entrambi:</p>
+      <pre><code class="python">def mixed(a, *args, **kwargs):
+    print(a, args, kwargs)
+
+mixed(1,2,3, x=10, y=20)</code></pre>
+    </section>
+
+    <!-- 4. Moduli & Pacchetti -->
+    <section id="modules" class="mb-5">
+      <h2>4. Moduli &amp; Pacchetti</h2>
+      <p>Ogni file <code>.py</code> è un modulo. Importa con:</p>
+      <pre><code class="python"># file: math_utils.py
+def square(x):
+    return x*x
+
+# in un altro file
+import math_utils
+print(math_utils.square(5))</code></pre>
+      <p>Usa <code>from … import …</code> per importare nomi nello scope:</p>
+      <pre><code class="python">from math_utils import square
+print(square(6))</code></pre>
+      <p>Raggruppa moduli in una directory con <code>__init__.py</code> per creare un pacchetto:</p>
+      <pre><code class="bash">project/
+└── utils/
+    ├── __init__.py
+    └── math_utils.py</code></pre>
+      <p>Proteggi il punto di ingresso dello script:</p>
+      <pre><code class="python">if __name__ == "__main__":
+    # codice da eseguire direttamente
+    pass</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Scrivi una funzione <code>multiply(a, b=1)</code> e testala con argomenti diversi.</li>
+        <li>Crea il modulo <code>stats.py</code> con <code>mean()</code> e <code>median()</code>, poi importalo ed usalo.</li>
+        <li>Implementa una funzione che accetta un numero qualsiasi di argomenti posizionali e keyword, e li stampa.</li>
+        <li>Crea un pacchetto <code>mypkg</code> con due moduli e mostra come importarli.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter6.html" class="btn btn-outline-secondary">&larr; Capitolo 6</a>
+      <a href="chapter8.html" class="btn btn-primary">Capitolo 8 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
