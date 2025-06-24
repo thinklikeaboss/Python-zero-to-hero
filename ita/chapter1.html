@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Capitolo 1 di Python Zero to Hero: installa Python, crea un venv, scrivi ed esegui il tuo primo script da console." />
+  <meta name="keywords" content="Python, installazione, ciao mondo, ambiente virtuale, console, tutorial" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Capitolo 1 – Configurazione & “Ciao, mondo!” | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter2.html">Capitolo 2</a></li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/bocaletto-luca/python-zero-to-hero"
+              target="_blank"
+              >Repository GitHub</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto Principale -->
+  <main class="container">
+    <header class="mb-4">
+      <h1 class="display-6">Capitolo 1: Configurazione & “Ciao, mondo!”</h1>
+      <p class="text-muted">
+        Prepara l’ambiente, scrivi il tuo primo script Python ed eseguilo da console.
+      </p>
+      <a
+        href="../src/chapter1.py"
+        download
+        class="btn btn-outline-primary btn-sm btn-py"
+        >Scarica <code>chapter1.py</code></a
+      >
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-4">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Installare Python 3.x e verificarne la versione</li>
+        <li>Creare e attivare un ambiente virtuale</li>
+        <li>Scrivere un semplice script “Ciao, mondo!”</li>
+        <li>Eseguire un file <code>.py</code> dal terminale</li>
+      </ul>
+    </section>
+
+    <!-- Teoria & Configurazione -->
+    <section id="setup" class="mb-4">
+      <h2>1. Installazione di Python & configurazione di venv</h2>
+      <p>
+        Vai su
+        <a href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a>
+        e installa l’ultima release di Python 3. Poi verifica nel terminale:
+      </p>
+      <pre><code class="bash">python3 --version</code></pre>
+      <p>Crea una cartella di progetto e spostati al suo interno:</p>
+      <pre><code class="bash">mkdir zero_to_hero &amp;&amp; cd zero_to_hero</code></pre>
+      <p>Inizializza un ambiente virtuale:</p>
+      <pre><code class="bash">python3 -m venv venv</code></pre>
+      <p>Attivalo:</p>
+      <pre><code class="bash">
+# macOS / Linux
+source venv/bin/activate
+
+# Windows PowerShell
+venv\Scripts\Activate.ps1
+      </code></pre>
+    </section>
+
+    <!-- Script “Ciao, mondo!” -->
+    <section id="hello-world" class="mb-4">
+      <h2>2. Scrivere “Ciao, mondo!”</h2>
+      <p>Crea <code>src/chapter1.py</code> con:</p>
+      <pre><code class="python">print("Hello, World!")</code></pre>
+      <p>Salva ed esegui:</p>
+      <pre><code class="bash">python src/chapter1.py</code></pre>
+      <p>Dovresti vedere:</p>
+      <pre><code class="output">Hello, World!</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Modifica <code>src/chapter1.py</code> per stampare il tuo nome e l’anno corrente.</li>
+        <li>Scrivi due istruzioni <code>print()</code> su righe separate.</li>
+        <li>Disattiva e riattiva il tuo ambiente virtuale; conferma di essere nel venv.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="index.html" class="btn btn-outline-secondary">&larr; Indietro all’Indice</a>
+      <a href="chapter2.html" class="btn btn-primary">Avanti: Capitolo 2 &rarr;</a>
+    </nav>
+  </main>
+
+   <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank"
+        >bocaletto-luca/python-zero-to-hero</a
+      >
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    integrity="sha512-v+HDTvKi4ym72wvsLmDdWKH1Z9r7qmOZEk11Kd/PO5vQRO3KHSEt+XeajpxdsBUW5Fve4BJR+wHrHBW2ApwBMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
