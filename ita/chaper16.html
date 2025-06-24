@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 16 di Python Zero to Hero: padroneggia decorator, closure e scrivi context manager personalizzati con __enter__/__exit__ e contextlib."/>
+  <meta name="keywords"
+        content="Python, decorator, closure, funzioni di prima classe, context manager, __enter__, __exit__, contextlib, @decorator"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 16 – Decorator & Context Manager | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter15.html">Capitolo 15</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter17.html">Capitolo 17</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 16: Decorator & Context Manager</h1>
+      <p class="text-muted">
+        Scopri come estendere il comportamento delle funzioni con decorator e gestire risorse elegantemente con context manager personalizzati.
+      </p>
+      <a href="src/chapter16.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter16.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Comprendere funzioni di prima classe e closure.</li>
+        <li>Scrivere e applicare semplici decorator usando la sintassi <code>@</code>.</li>
+        <li>Creare decorator parametrizzati.</li>
+        <li>Implementare context manager tramite <code>__enter__</code> e <code>__exit__</code>.</li>
+        <li>Usare <code>contextlib.contextmanager</code> per context manager basati su generatori.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Closure -->
+    <section id="closures" class="mb-5">
+      <h2>1. Closure & Funzioni Annidate</h2>
+      <p>Le funzioni sono oggetti di prima classe e possono essere definite dentro altre:</p>
+      <pre><code class="python">def make_multiplier(factor):
+    def multiply(x):
+        return x * factor
+    return multiply
+
+times3 = make_multiplier(3)
+print(times3(10))  # 30</code></pre>
+    </section>
+
+    <!-- 2. Decorator Semplici -->
+    <section id="simple-decorators" class="mb-5">
+      <h2>2. Decorator Semplici</h2>
+      <p>Avvolgi una funzione per estenderne il comportamento:</p>
+      <pre><code class="python">def debug(func):
+    def wrapper(*args, **kwargs):
+        print(f"Chiamata a {func.__name__} con", args, kwargs)
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} ha restituito", result)
+        return result
+    return wrapper
+
+@debug
+def add(a, b):
+    return a + b
+
+add(2, 5)</code></pre>
+    </section>
+
+    <!-- 3. Decorator Parametrizzati -->
+    <section id="decorator-args" class="mb-5">
+      <h2>3. Decorator Parametrizzati</h2>
+      <p>Decorator che accettano argomenti:</p>
+      <pre><code class="python">def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for i in range(n):
+                print(f"Esecuzione {i+1}")
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print("Hello", name)
+
+greet("Alice")</code></pre>
+    </section>
+
+    <!-- 4. Context Manager in Classe -->
+    <section id="class-cm" class="mb-5">
+      <h2>4. Context Manager: <code>__enter__</code> &amp; <code>__exit__</code></h2>
+      <p>Crea una classe per gestire risorse:</p>
+      <pre><code class="python">class Resource:
+    def __enter__(self):
+        print("Acquisizione risorsa")
+        return self
+    def __exit__(self, exc_type, exc, tb):
+        print("Rilascio risorsa")
+
+with Resource() as r:
+    print("Nel blocco with")</code></pre>
+    </section>
+
+    <!-- 5. contextlib -->
+    <section id="contextlib" class="mb-5">
+      <h2>5. Context Manager con contextlib</h2>
+      <p>Usa <code>@contextmanager</code> per semplificare:</p>
+      <pre><code class="python">from contextlib import contextmanager
+
+@contextmanager
+def open_file(path, mode):
+    f = open(path, mode)
+    try:
+        yield f
+    finally:
+        f.close()
+
+with open_file("data.txt", "w") as f:
+    f.write("Hello")</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Scrivi un decorator che misura e stampa il tempo di esecuzione di una funzione.</li>
+        <li>Crea un decorator che memorizza i risultati di una funzione (memoization).</li>
+        <li>Implementa un context manager che misura e stampa il tempo di esecuzione di un blocco.</li>
+        <li>Riscrivi un context manager di apertura file usando <code>@contextmanager</code>.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter15.html" class="btn btn-outline-secondary">&larr; Capitolo 15</a>
+      <a href="chapter17.html" class="btn btn-primary">Capitolo 17 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
