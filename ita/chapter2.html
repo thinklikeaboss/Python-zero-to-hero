@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Capitolo 2 di Python Zero to Hero: esplora i tipi di dato fondamentali di Python e l’assegnazione delle variabili." />
+  <meta name="keywords" content="Python, tipi di dato, variabili, int, float, str, bool, None" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Capitolo 2 – Tipi di dato & Variabili | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarContent" aria-controls="navbarContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter1.html">Capitolo 1</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repository GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <header class="mb-4">
+      <h1 class="display-6">Capitolo 2: Tipi di dato & Variabili</h1>
+      <p class="text-muted">Comprendi i tipi integrati di Python e come assegnare e denominare le variabili.</p>
+      <a href="../src/chapter2.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter2.py</code>
+      </a>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-4">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Riconoscere i tipi di dato fondamentali di Python: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>None</code>.</li>
+        <li>Dichiarare e nominare variabili secondo le convenzioni Python.</li>
+        <li>Differenziare tipi mutabili e immutabili.</li>
+      </ul>
+    </section>
+
+    <!-- Teoria: Tipi di dato -->
+    <section id="types" class="mb-4">
+      <h2>1. Tipi di dato principali</h2>
+      <p>Python offre diversi tipi primitivi:</p>
+      <ul>
+        <li><code>int</code>: numeri interi, es. <code>42</code></li>
+        <li><code>float</code>: numeri in virgola mobile, es. <code>3.14</code></li>
+        <li><code>str</code>: stringhe di testo, es. <code>"Hello"</code></li>
+        <li><code>bool</code>: booleani, <code>True</code> o <code>False</code></li>
+        <li><code>NoneType</code>: assenza di valore, <code>None</code></li>
+      </ul>
+      <p>Usa <code>type()</code> per ispezionare:</p>
+      <pre><code class="python">
+>>> type(100)
+&lt;class 'int'&gt;
+>>> type("Python")
+&lt;class 'str'&gt;
+      </code></pre>
+    </section>
+
+    <!-- Teoria: Variabili -->
+    <section id="variables" class="mb-4">
+      <h2>2. Variabili & Denominazione</h2>
+      <p>Assegna valori con <code>=</code>:</p>
+      <pre><code class="python">
+x = 10
+name = "Alice"
+is_valid = True
+      </code></pre>
+      <p>Regole di denominazione:</p>
+      <ul>
+        <li>Lettere minuscole e underscore per separare: <code>my_variable</code>.</li>
+        <li>Deve iniziare con lettera o underscore, non con un numero.</li>
+        <li>Non usare parole riservate: <code>for</code>, <code>class</code>, ecc.</li>
+      </ul>
+      <p>Puoi riassegnare variabili a tipi diversi:</p>
+      <pre><code class="python">
+x = 10
+x = "dieci"     # ora è str
+      </code></pre>
+    </section>
+
+    <!-- Teoria: Mutabilità -->
+    <section id="mutability" class="mb-4">
+      <h2>3. Mutabilità vs Immutabilità</h2>
+      <p>I tipi immutabili (<code>int</code>, <code>float</code>, <code>str</code>, <code>tuple</code>) non possono essere modificati in-place.</p>
+      <p>I tipi mutabili (<code>list</code>, <code>dict</code>, <code>set</code>) possono essere cambiati:</p>
+      <pre><code class="python">
+# immutabile
+a = "hello"
+a += " world"   # crea una nuova stringa
+
+# mutabile
+lst = [1, 2, 3]
+lst.append(4)   # modifica l'oggetto list originale
+      </code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Stampa il tipo di ogni letterale: <code>123</code>, <code>3.14</code>, <code>"text"</code>, <code>False</code>, <code>None</code>.</li>
+        <li>Crea tre variabili di tipo diverso e stampa nomi e valori in un’unica chiamata <code>print()</code>.</li>
+        <li>Mostra la mutazione di una lista e il tentativo (fallito) di mutare una stringa.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter1.html" class="btn btn-outline-secondary">&larr; Capitolo 1</a>
+      <a href="chapter3.html" class="btn btn-primary">Capitolo 3 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap & Highlight.js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
