@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Python Zero to Hero è un corso open-source basato su progetti con lezioni HTML autonome, script demo eseguibili ed esercizi – dalle basi agli argomenti avanzati. Di Bocaletto Luca." />
+  <meta name="keywords" content="Python, open-source, tutorial, corso, programmazione, Bocaletto Luca, API web, packaging, database, Flask, FastAPI, CLI, concorrenza, pandas, numpy, asyncio" />
+
+  <title>Python Zero to Hero | Corso Open Source di Bocaletto Luca</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  >
+  <style>
+    body {
+      padding-top: 4rem;
+    }
+    .chapter-list a {
+      text-decoration: none;
+    }
+    footer {
+      padding: 2rem 0;
+      text-align: center;
+      font-size: .9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Python Zero to Hero</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navMenu"
+        aria-controls="navMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#fundamentals">Fondamenti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#advanced">Argomenti avanzati</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repository GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto Principale -->
+  <main class="container">
+    <header class="mb-5">
+      <h1 class="display-5">Python Zero to Hero</h1>
+      <p class="lead">
+        Un percorso completo in sola console, dalle primissime basi di Python fino agli argomenti più avanzati. Ogni capitolo include teoria, esempi di codice, esercizi e file <code>.py</code> scaricabili.
+      </p>
+      <hr>
+    </header>
+
+    <!-- Sezione Fondamenti -->
+    <section id="fundamentals" class="mb-5">
+      <h2>Fondamenti (solo console)</h2>
+      <p>I primi 10 capitoli coprono le basi di Python, dall’installazione agli iteratori e alle comprensioni.</p>
+      <ul class="list-group chapter-list">
+        <li class="list-group-item"><a href="chapter1.html">1. Configurazione & “Ciao, mondo!”</a></li>
+        <li class="list-group-item"><a href="chapter2.html">2. Tipi di dati & Variabili</a></li>
+        <li class="list-group-item"><a href="chapter3.html">3. Operatori</a></li>
+        <li class="list-group-item"><a href="chapter4.html">4. Input/Output da console</a></li>
+        <li class="list-group-item"><a href="chapter5.html">5. Controllo di flusso</a></li>
+        <li class="list-group-item"><a href="chapter6.html">6. Collezioni</a></li>
+        <li class="list-group-item"><a href="chapter7.html">7. Funzioni & Moduli</a></li>
+        <li class="list-group-item"><a href="chapter8.html">8. Lettura e scrittura file</a></li>
+        <li class="list-group-item"><a href="chapter9.html">9. Errori ed Eccezioni</a></li>
+        <li class="list-group-item"><a href="chapter10.html">10. Iteratori, Generatori & Comprensioni</a></li>
+      </ul>
+    </section>
+
+    <!-- Sezione Avanzata -->
+    <section id="advanced" class="mb-5">
+      <h2>Argomenti avanzati</h2>
+      <p>I capitoli 11–22 approfondiscono OOP, testing, networking, packaging, performance e molto altro.</p>
+      <ul class="list-group chapter-list">
+        <li class="list-group-item"><a href="chapter11.html">11. Programmazione a oggetti</a></li>
+        <li class="list-group-item"><a href="chapter12.html">12. Decoratori & Gestori di contesto</a></li>
+        <li class="list-group-item"><a href="chapter13.html">13. Argomenti da linea di comando</a></li>
+        <li class="list-group-item"><a href="chapter14.html">14. Logging & Configurazione</a></li>
+        <li class="list-group-item"><a href="chapter15.html">15. Test & Debugging</a></li>
+        <li class="list-group-item"><a href="chapter16.html">16. Concorrenza & Parallelismo</a></li>
+        <li class="list-group-item"><a href="chapter17.html">17. Reti & HTTP</a></li>
+        <li class="list-group-item"><a href="chapter18.html">18. Database da console (SQLite)</a></li>
+        <li class="list-group-item"><a href="chapter19.html">19. Interazione con OS & filesystem</a></li>
+        <li class="list-group-item"><a href="chapter20.html">20. Packaging & Distribuzione</a></li>
+        <li class="list-group-item"><a href="chapter21.html">21. Profiling & Ottimizzazione</a></li>
+        <li class="list-group-item"><a href="chapter22.html">22. Progetto finale CLI</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      © 2025 Python Zero to Hero • 
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </p>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+</body>
+</html>
