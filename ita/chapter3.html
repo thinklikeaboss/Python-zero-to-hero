@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Capitolo 3 di Python Zero to Hero: approfondimento sugli operatori di Python – aritmetici, confronto, logici, di assegnazione, precedenza, identità e appartenenza." />
+  <meta name="keywords" content="Python, operatori, aritmetici, confronto, logici, assegnazione, precedenza, identità, appartenenza" />
+  <meta name="author" content="Luca Bocaletto" />
+  <title>Capitolo 3 – Operatori | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-YSa3P1QY0VSei3nHevwltF1Jxv2pT3z5z0R6x35o1XQdYzdgQc8sYC+bS9v+g3Tc"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    integrity="sha512-94jnYVzi0AuOmT1JrLJiqxGWM1ZwVz4i1oF6XD2fXZj2lq+OJ9GSeUWLeFN5svoe0WyWkDi/gAhFI8QeYQj1Rg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .operator-table th,
+    .operator-table td { vertical-align: middle; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter2.html">Capitolo 2</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter4.html">Capitolo 4</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repository GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 3: Operatori</h1>
+      <p class="text-muted">Padroneggia gli operatori di Python: aritmetici, confronto, logici, assegnazione, precedenza, identità e appartenenza.</p>
+      <a href="../src/chapter3.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter3.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Eseguire calcoli con operatori aritmetici.</li>
+        <li>Confrontare valori con operatori di confronto.</li>
+        <li>Combinare espressioni booleane con operatori logici.</li>
+        <li>Usare operatori di assegnazione semplici e incrementali.</li>
+        <li>Comprendere precedenza e associazione degli operatori.</li>
+        <li>Esplorare operatori di identità (<code>is</code>) e appartenenza (<code>in</code>).</li>
+      </ul>
+    </section>
+
+    <!-- 1. Operatori aritmetici -->
+    <section id="arithmetic" class="mb-5">
+      <h2>1. Operatori aritmetici</h2>
+      <p>Operazioni matematiche di base:</p>
+      <table class="table table-sm table-bordered operator-table">
+        <thead>
+          <tr><th>Operatore</th><th>Descrizione</th><th>Esempio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>+</code></td><td>Addizione</td><td><code>2 + 3  # 5</code></td></tr>
+          <tr><td><code>-</code></td><td>Sottrazione</td><td><code>5 - 1  # 4</code></td></tr>
+          <tr><td><code>*</code></td><td>Moltiplicazione</td><td><code>4 * 3  # 12</code></td></tr>
+          <tr><td><code>/</code></td><td>Divisione (float)</td><td><code>7 / 2  # 3.5</code></td></tr>
+          <tr><td><code>//</code></td><td>Divisione intera</td><td><code>7 // 2  # 3</code></td></tr>
+          <tr><td><code>%</code></td><td>Modulo (resto)</td><td><code>7 % 2  # 1</code></td></tr>
+          <tr><td><code>**</code></td><td>Esponenziazione</td><td><code>2 ** 3  # 8</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. Operatori di confronto -->
+    <section id="comparison" class="mb-5">
+      <h2>2. Operatori di confronto</h2>
+      <p>Valutano relazioni, restituiscono <code>True</code> o <code>False</code>:</p>
+      <table class="table table-sm table-bordered operator-table">
+        <thead>
+          <tr><th>Operatore</th><th>Descrizione</th><th>Esempio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>==</code></td><td>Uguale a</td><td><code>3 == 3  # True</code></td></tr>
+          <tr><td><code>!=</code></td><td>Diverso da</td><td><code>4 != 5  # True</code></td></tr>
+          <tr><td><code>&lt;</code></td><td>Minore di</td><td><code>2 < 5  # True</code></td></tr>
+          <tr><td><code>&gt;</code></td><td>Maggiore di</td><td><code>5 > 2  # True</code></td></tr>
+          <tr><td><code>&lt;=</code></td><td>Minore o uguale</td><td><code>3 <= 3  # True</code></td></tr>
+          <tr><td><code>&gt;=</code></td><td>Maggiore o uguale</td><td><code>4 >= 2  # True</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. Operatori logici -->
+    <section id="logical" class="mb-5">
+      <h2>3. Operatori logici</h2>
+      <p>Combinano espressioni booleane:</p>
+      <ul>
+        <li><code>and</code>: <code>True</code> se entrambi gli operandi sono <code>True</code></li>
+        <li><code>or</code>: <code>True</code> se almeno un operando è <code>True</code></li>
+        <li><code>not</code>: inverte un valore booleano</li>
+      </ul>
+      <pre><code class="python">
+# Esempi
+True and False   # False
+True or False    # True
+not True         # False
+      </code></pre>
+    </section>
+
+    <!-- 4. Assegnazione -->
+    <section id="assignment" class="mb-5">
+      <h2>4. Assegnazione & Assegnazione incrementale</h2>
+      <p>Salva e aggiorna il valore di variabili:</p>
+      <pre><code class="python">
+# Assegnazione standard
+x = 10
+
+# Assegnazione incrementale
+x += 5    # x = x + 5 → 15
+x *= 2    # x = x * 2 → 30
+x %= 7    # x = x % 7 → 2
+      </code></pre>
+    </section>
+
+    <!-- 5. Precedenza & altri operatori -->
+    <section id="precedence" class="mb-5">
+      <h2>5. Precedenza & altri operatori</h2>
+      <p>Ordine delle operazioni (dal più alto al più basso):</p>
+      <ol>
+        <li><code>**</code> (esponenziazione)</li>
+        <li><code>*, /, //, %</code></li>
+        <li><code>+, -</code></li>
+        <li><code>&lt;, &lt;=, &gt;, &gt;=</code></li>
+        <li><code>==, !=</code></li>
+        <li><code>not</code></li>
+        <li><code>and</code></li>
+        <li><code>or</code></li>
+      </ol>
+      <p>Operatori di identità e appartenenza:</p>
+      <pre><code class="python">
+# Identità
+a = [1,2,3]
+b = a
+c = a[:]
+a is b    # True
+a is c    # False
+
+# Appartenenza
+2 in a      # True
+5 not in a  # True
+      </code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Calcola <code>(3 + 5) * 2 ** 3 / 4 % 3</code>, stampando ogni passaggio intermedio.</li>
+        <li>Scrivi un’espressione booleana per verificare se <code>n</code> è strettamente tra 1 e 10.</li>
+        <li>Mostra la differenza tra <code>is</code> e <code>==</code> con due liste identiche.</li>
+        <li>Partendo da <code>x = 5</code>, usa assegnazioni incrementali fino a ottenere <code>x = 120</code>.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter2.html" class="btn btn-outline-secondary">&larr; Capitolo 2</a>
+      <a href="chapter4.html" class="btn btn-primary">Capitolo 4 &rarr;</a>
+    </nav>
+  </main>
+
+   <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Scripts -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pQjTSprQoSWb8PQmxHkFvHUuI+13Z2VBxXc5xykxDc8/8aMbkwg/Sf5FCvbyT1Kg"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
