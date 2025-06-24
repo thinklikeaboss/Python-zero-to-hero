@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 21 di Python Zero to Hero: crea applicazioni web e API RESTful con Flask e FastAPI—routing, template, gestione delle richieste e deployment."/>
+  <meta name="keywords"
+        content="Python, sviluppo web, Flask, FastAPI, routing, template, Jinja2, dependency injection, deployment"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 21 – Sviluppo Web con Flask &amp; FastAPI | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter20.html">Capitolo 20</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter22.html">Capitolo 22</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="https://github.com/bocaletto-luca/python-zero-to-hero"
+               target="_blank">Repo GitHub</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 21: Sviluppo Web con Flask &amp; FastAPI</h1>
+      <p class="text-muted">
+        Impara a creare applicazioni web e API RESTful usando Flask e FastAPI, dal routing alla templating fino al deployment.
+      </p>
+      <a href="src/chapter21.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter21.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Configurare un’app Flask di base: route, view, template.</li>
+        <li>Gestire metodi HTTP, parametri di query e dati di form.</li>
+        <li>Costruire API REST con FastAPI: parametri path e body, validazione.</li>
+        <li>Usare Jinja2 per template HTML dinamici.</li>
+        <li>Distribuire un’app Flask/FastAPI con Uvicorn o Gunicorn.</li>
+      </ul>
+    </section>
+
+    <!-- 1. Flask Basics -->
+    <section id="flask-basics" class="mb-5">
+      <h2>1. Nozioni di base su Flask</h2>
+      <pre><code class="python">from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return "Hello, Flask!"
+
+@app.route("/greet/&lt;name&gt;")
+def greet(name):
+    return f"Benvenuto, {name}!"
+
+@app.route("/submit", methods=["GET","POST"])
+def submit():
+    if request.method == "POST":
+        data = request.form.get("data")
+        return render_template("result.html", data=data)
+    return render_template("form.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+</code></pre>
+      <p>Struttura della cartella dei template:</p>
+      <pre><code class="bash">templates/
+├── form.html
+└── result.html</code></pre>
+      <p>Esempio di <code>form.html</code>:</p>
+      <pre><code class="html">&lt;form method="post"&gt;
+  &lt;input name="data" /&gt;
+  &lt;button&gt;Invia&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      <p>Esempio di <code>result.html</code>:</p>
+      <pre><code class="html">&lt;p&gt;Hai inviato: {{ data }}&lt;/p&gt;</code></pre>
+      <hr>
+    </section>
+
+    <!-- 2. FastAPI Basics -->
+    <section id="fastapi-basics" class="mb-5">
+      <h2>2. Nozioni di base su FastAPI</h2>
+      <pre><code class="python">from fastapi import FastAPI
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+app = FastAPI()
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: str | None = None):
+    return {"item_id": item_id, "q": q}
+
+@app.post("/items/")
+def create_item(item: Item):
+    return {"message": "Creato", "item": item}
+
+# esegui con: uvicorn src.chapter21:app --reload</code></pre>
+      <hr>
+    </section>
+
+    <!-- 3. Deployment -->
+    <section id="deployment" class="mb-5">
+      <h2>3. Deployment</h2>
+      <pre><code class="bash"># Gunicorn per Flask
+gunicorn --bind 0.0.0.0:8000 wsgi:app
+
+# Uvicorn per FastAPI
+uvicorn src.chapter21:app --host 0.0.0.0 --port 8000</code></pre>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Crea un’app “to-do” in Flask con aggiunta/rimozione di task in memoria.</li>
+        <li>Scrivi un endpoint FastAPI che valida un payload JSON di dati utente.</li>
+        <li>Usa l’ereditarietà dei template Jinja2 per costruire un layout comune nelle pagine Flask.</li>
+        <li>Containerizza la tua app Flask/FastAPI con Docker ed eseguila localmente.</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter20.html" class="btn btn-outline-secondary">&larr; Capitolo 20</a>
+      <a href="chapter22.html" class="btn btn-primary">Capitolo 22 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+        bocaletto-luca/python-zero-to-hero
+      </a>
+    </small>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Highlight.js JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
