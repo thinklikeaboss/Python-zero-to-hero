@@ -6,7 +6,7 @@
   <meta name="description"
         content="Capitolo 17 di Python Zero to Hero: impara a usare i type hint, le annotazioni e il modulo typing per il typing statico."/>
   <meta name="keywords"
-        content="Python, typing, type hint, annotazioni, mypy, List, Dict, Optional, Union, Any, TypeVar, Generic"/>
+        content="Python, typing, hint di tipo, annotazioni, mypy, List, Dict, Optional, Union, Any, TypeVar, Generic"/>
   <meta name="author" content="Luca Bocaletto"/>
   <title>Capitolo 17 – Type Hints & Typing Statico | Python Zero to Hero</title>
 
@@ -46,9 +46,9 @@
           <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
           <li class="nav-item"><a class="nav-link" href="chapter18.html">Capitolo 18</a></li>
           <li class="nav-item">
-            <a class="nav-link"
-               href="https://github.com/bocaletto-luca/python-zero-to-hero"
-               target="_blank">Repo GitHub</a>
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
           </li>
         </ul>
       </div>
@@ -71,8 +71,8 @@
       <h2>Obiettivi</h2>
       <ul>
         <li>Annotare parametri e tipi di ritorno delle funzioni.</li>
-        <li>Usare annotazioni per le variabili.</li>
-        <li>Importare e applicare tipi comuni da <code>typing</code> (List, Dict, Optional, Union, Any).</li>
+        <li>Usare annotazioni per variabili.</li>
+        <li>Importare e usare tipi comuni da <code>typing</code> (List, Dict, Optional, Union, Any).</li>
         <li>Definire generici con <code>TypeVar</code> e <code>Generic</code>.</li>
         <li>Eseguire controlli statici con <code>mypy</code>.</li>
       </ul>
@@ -87,20 +87,18 @@ def add(a: int, b: int) -> int:
     return a + b
 
 print(greet.__annotations__)
-# {'name': <class 'str'>, 'return': <class 'str'>}
-</code></pre>
+# {'name': <class 'str'>, 'return': <class 'str'>}</code></pre>
     </section>
 
     <section id="var-annotations" class="mb-5">
-      <h2>2. Annotazioni per le Variabili</h2>
+      <h2>2. Annotazioni per Variabili</h2>
       <pre><code class="python">from typing import List
 
 ages: List[int] = [25, 30, 35]
 threshold: float = 4.5
 
 print(globals().get('__annotations__'))
-# {'ages': list[int], 'threshold': float}
-</code></pre>
+# {'ages': list[int], 'threshold': float}</code></pre>
     </section>
 
     <section id="typing" class="mb-5">
@@ -116,8 +114,7 @@ def process(data: Union[str, bytes]) -> None:
 
 user = find_user(2)
 if user is None:
-    print("Non trovato")
-</code></pre>
+    print("Non trovato")</code></pre>
     </section>
 
     <section id="generics" class="mb-5">
@@ -139,16 +136,14 @@ class Stack(Generic[T]):
 int_stack = Stack[int]()
 int_stack.push(1)
 str_stack = Stack[str]()
-str_stack.push("hello")
-</code></pre>
+str_stack.push("hello")</code></pre>
     </section>
 
     <section id="mypy" class="mb-5">
       <h2>5. Controllo Statico con <code>mypy</code></h2>
       <pre><code class="bash">pip install mypy
-mypy src/chapter17.py --strict
-</code></pre>
-      <p>Correggi i mismatch segnalati per allineare annotazioni e utilizzo.</p>
+mypy src/chapter17.py --strict</code></pre>
+      <p>Correggi gli errori segnalati per allineare annotazioni e utilizzo.</p>
     </section>
 
     <section id="exercises" class="mb-5">
@@ -156,8 +151,8 @@ mypy src/chapter17.py --strict
       <ol>
         <li>Aggiungi type hints a un modulo calcolatrice (add, sub, mul, div).</li>
         <li>Annota una funzione di caricamento dati che ritorna <code>List[Dict[str, Any]]</code>.</li>
-        <li>Crea una classe generica <code>Queue[T]</code> con <code>enqueue()</code> e <code>dequeue()</code>.</li>
-        <li>Esegui <code>mypy</code> sul tuo codice e risolvi gli errori di tipo.</li>
+        <li>Crea una classe generica <code>Queue[T]</code> con metodi <code>enqueue()</code> e <code>dequeue()</code>.</li>
+        <li>Esegui <code>mypy</code> sul codice e risolvi tutti gli errori di tipo.</li>
       </ol>
     </section>
 
@@ -176,7 +171,7 @@ mypy src/chapter17.py --strict
     </small>
   </footer>
 
-  <!-- Script -->
+  <!-- Bootstrap & Highlight.js -->
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"
