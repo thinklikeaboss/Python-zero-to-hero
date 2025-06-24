@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description"
+        content="Capitolo 20 di Python Zero to Hero: connettersi a database relazionali con sqlite3, usare SQLAlchemy Core & ORM e gestire migrazioni."/>
+  <meta name="keywords"
+        content="Python, sqlite3, SQL, SQLAlchemy, ORM, database, CRUD, alembic, schema, sessioni"/>
+  <meta name="author" content="Luca Bocaletto"/>
+  <title>Capitolo 20 – Accesso a Database &amp; ORM | Python Zero to Hero</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Highlight.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body { padding-top: 4.5rem; }
+    pre code { font-size: .9rem; }
+    .btn-py { font-family: monospace; }
+    .table th, .table td { vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Python Zero to Hero</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navContent" aria-controls="navContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="chapter19.html">Capitolo 19</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Indice</a></li>
+          <li class="nav-item"><a class="nav-link" href="chapter21.html">Capitolo 21</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/bocaletto-luca/python-zero-to-hero" target="_blank">
+              Repo GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <!-- Intestazione -->
+    <header class="my-4">
+      <h1 class="display-6">Capitolo 20: Accesso a Database &amp; ORM</h1>
+      <p class="text-muted">
+        Connettiti a database relazionali con sqlite3 integrato, esplora SQLAlchemy Core &amp; ORM e gestisci migrazioni di schema.
+      </p>
+      <a href="src/chapter20.py" download class="btn btn-outline-primary btn-sm btn-py">
+        Scarica <code>chapter20.py</code>
+      </a>
+      <hr>
+    </header>
+
+    <!-- Obiettivi -->
+    <section id="objectives" class="mb-5">
+      <h2>Obiettivi</h2>
+      <ul>
+        <li>Usare <code>sqlite3</code> per aprire connessioni, eseguire query e transazioni.</li>
+        <li>Eseguire operazioni CRUD con SQL grezzo.</li>
+        <li>Definire tabelle ed eseguire query con SQLAlchemy Core.</li>
+        <li>Associare classi Python a tabelle tramite SQLAlchemy ORM.</li>
+        <li>Configurare ed eseguire migrazioni con Alembic.</li>
+      </ul>
+    </section>
+
+    <!-- 1. sqlite3 -->
+    <section id="sqlite3" class="mb-5">
+      <h2>1. Basi di sqlite3</h2>
+      <pre><code class="python">import sqlite3
+
+# connessione (crea file se mancante)
+conn = sqlite3.connect('app.db')
+cur = conn.cursor()
+
+# crea tabella
+cur.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE
+    )
+''')
+conn.commit()
+
+# inserimento e query
+cur.execute("INSERT INTO users (name,email) VALUES (?,?)",
+            ("Alice","alice@example.com"))
+conn.commit()
+cur.execute("SELECT id,name FROM users")
+print(cur.fetchall())
+
+# chiusura
+cur.close()
+conn.close()</code></pre>
+    </section>
+
+    <!-- 2. Transazioni -->
+    <section id="transactions" class="mb-5">
+      <h2>2. Transazioni &amp; Context Manager</h2>
+      <pre><code class="python">from sqlite3 import connect
+
+# context manager committa o rollbacka
+with connect('app.db') as conn:
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET name=? WHERE id=?",
+                ("Alice Smith", 1))
+
+# connessione chiusa automaticamente</code></pre>
+      <p>Eccezioni nel blocco <code>with</code> eseguono rollback.</p>
+    </section>
+
+    <!-- 3. SQLAlchemy Core -->
+    <section id="core" class="mb-5">
+      <h2>3. SQLAlchemy Core</h2>
+      <pre><code class="python">from sqlalchemy import (
+    create_engine, MetaData, Table, Column, Integer, String, select
+)
+
+engine = create_engine('sqlite:///app.db', echo=True)
+metadata = MetaData()
+
+users = Table(
+    'users', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('name', String),
+    Column('email', String, unique=True)
+)
+metadata.create_all(engine)
+
+# inserimento e selezione
+with engine.connect() as conn:
+    conn.execute(users.insert(), [
+        {"name":"Bob","email":"bob@example.com"}
+    ])
+    result = conn.execute(select(users)).fetchall()
+    print(result)</code></pre>
+    </section>
+
+    <!-- 4. SQLAlchemy ORM -->
+    <section id="orm" class="mb-5">
+      <h2>4. SQLAlchemy ORM</h2>
+      <pre><code class="python">from sqlalchemy.orm import (
+    declarative_base, sessionmaker
+)
+from sqlalchemy import Column, Integer, String, create_engine
+
+Base = declarative_base()
+engine = create_engine('sqlite:///app.db', echo=False)
+Session = sessionmaker(bind=engine)
+
+class User(Base):
+    __tablename__ = 'users'
+    id    = Column(Integer, primary_key=True)
+    name  = Column(String, nullable=False)
+    email = Column(String, unique=True)
+
+Base.metadata.create_all(engine)
+
+# CRUD con Session
+session = Session()
+new_user = User(name="Carol", email="carol@example.com")
+session.add(new_user)
+session.commit()
+
+users = session.query(User).filter_by(name="Carol").all()
+print(users)
+session.close()</code></pre>
+    </section>
+
+    <!-- 5. Alembic -->
+    <section id="alembic" class="mb-5">
+      <h2>5. Migrazioni con Alembic</h2>
+      <pre><code class="bash"># installa alembic
+pip install alembic
+
+# inizializza
+alembic init migrations
+
+# modifica alembic.ini per puntare a sqlite:///app.db,
+# genera migrazione automatica
+alembic revision --autogenerate -m "create users table"
+
+# applica migrazione
+alembic upgrade head</code></pre>
+      <p>Usa le migrazioni per evolvere lo schema in modo sicuro.</p>
+    </section>
+
+    <!-- Esercizi -->
+    <section id="exercises" class="mb-5">
+      <h2>Esercizi</h2>
+      <ol>
+        <li>Scrivi uno script per inserire, aggiornare e cancellare record con sqlite3 e stampare i risultati.</li>
+        <li>Ripeti le stesse operazioni con SQLAlchemy Core.</li>
+        <li>Definisci un modello ORM <code>Product</code> e fai query per fascia di prezzo.</li>
+        <li>Crea una nuova migrazione Alembic per aggiungere una colonna timestamp "created_at".</li>
+      </ol>
+    </section>
+
+    <!-- Navigazione -->
+    <nav class="d-flex justify-content-between mb-5">
+      <a href="chapter19.html" class="btn btn-outline-secondary">&larr; Capitolo 19</a>
+      <a href="chapter21.html" class="btn btn-primary">Capitolo 21 &rarr;</a>
+    </nav>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 border-top">
+    <small>
+      © 2025 Python Zero to Hero •
+      <a href="https://github.com/bocaletto-luca/python-zero-to-hero"
+         target="_blank">bocaletto-luca/python-zero-to-hero</a>
+    </small>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
